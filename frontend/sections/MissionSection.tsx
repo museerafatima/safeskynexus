@@ -10,25 +10,30 @@ const missionPoints = [
 
 export default function MissionSection() {
   return (
-    <section className="max-w-container mx-auto px-6 py-16">
+    <section className="max-w-container mx-auto px-6 py-16 overflow-hidden">
       <div className="grid md:grid-cols-2 gap-10 items-center">
         {/* Left: image collage */}
-        <div className="relative w-full">
-          <Image
-            src="/images/mission-main.png"
-            alt="SafeSky Nexus drone module"
-            width={600}
-            height={500}
-            className="w-full h-auto rounded-md"
-          />
-          <div className="absolute bottom-[-6%] right-[2%] w-1/4">
+        <div className="relative w-full max-w-md mx-auto md:mx-0 aspect-4/3">
+          <div className="absolute inset-0 rounded-2xl overflow-hidden shadow-lg z-10">
             <Image
-              src="/images/mission-overlay.png"
-              alt="SafeSky Nexus drone overhead view"
-              width={200}
-              height={200}
-              className="w-full h-auto rounded-lg shadow-lg"
+              src="/images/mission-main.png"
+              alt="SafeSky Nexus drone module"
+              fill
+              sizes="(max-width: 768px) 100vw, 448px"
+              className="object-cover"
             />
+          </div>
+
+          <div className="absolute -bottom-6 -right-6 w-2/5 aspect-square bg-white p-2 rounded-xl shadow-xl z-20">
+            <div className="relative w-full h-full rounded-lg overflow-hidden">
+              <Image
+                src="/images/mission-overlay.png"
+                alt="SafeSky Nexus drone overhead view"
+                fill
+                sizes="(max-width: 768px) 40vw, 180px"
+                className="object-cover"
+              />
+            </div>
           </div>
         </div>
 
