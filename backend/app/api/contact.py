@@ -12,6 +12,7 @@ def create_contact(payload: ContactCreate, db: Session = Depends(get_db)):
         submission = ContactSubmission(
             name=payload.name,
             email=payload.email,
+            phone=payload.phone,
             message=payload.message,
         )
         db.add(submission)
