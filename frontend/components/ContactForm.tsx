@@ -33,14 +33,19 @@ export default function ContactForm() {
     }
   }
 
+  const inputClasses =
+    "w-full min-h-11 border border-gray-300 rounded-full px-4 py-3 text-base text-body focus:outline-none focus:ring-2 focus:ring-orange focus:border-orange";
+
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
-      <h2 className="text-navy text-2xl md:text-3xl font-bold mb-1">
+    <div className="bg-white rounded-xl sm:rounded-2xl border border-gray-200 shadow-sm p-4 sm:p-6">
+      <h2 className="text-navy text-xl sm:text-2xl md:text-3xl font-bold mb-1">
         Get In Touch
       </h2>
-      <p className="text-muted text-sm mb-6">We would love to hear from you</p>
+      <p className="text-muted text-sm mb-5 sm:mb-6">
+        We would love to hear from you
+      </p>
 
-      <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+      <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5" noValidate>
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-navy mb-1">
             Name
@@ -51,7 +56,7 @@ export default function ContactForm() {
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border border-gray-300 rounded-full px-4 py-2.5 text-body focus:outline-none focus:ring-2 focus:ring-orange focus:border-orange"
+            className={inputClasses}
           />
         </div>
 
@@ -65,7 +70,7 @@ export default function ContactForm() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-gray-300 rounded-full px-4 py-2.5 text-body focus:outline-none focus:ring-2 focus:ring-orange focus:border-orange"
+            className={inputClasses}
           />
         </div>
 
@@ -78,7 +83,7 @@ export default function ContactForm() {
             type="tel"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className="w-full border border-gray-300 rounded-full px-4 py-2.5 text-body focus:outline-none focus:ring-2 focus:ring-orange focus:border-orange"
+            className={inputClasses}
           />
         </div>
 
@@ -89,17 +94,17 @@ export default function ContactForm() {
           <textarea
             id="message"
             required
-            rows={5}
+            rows={4}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="w-full border border-gray-300 rounded-2xl px-4 py-2.5 text-body focus:outline-none focus:ring-2 focus:ring-orange focus:border-orange resize-none"
+            className="w-full border border-gray-300 rounded-2xl px-4 py-3 text-base text-body focus:outline-none focus:ring-2 focus:ring-orange focus:border-orange resize-none"
           />
         </div>
 
         <button
           type="submit"
           disabled={status === "loading"}
-          className="bg-orange text-white font-medium px-8 py-2.5 rounded-full hover:opacity-90 transition-opacity disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-full sm:w-auto min-h-11 bg-orange text-white font-medium px-8 py-3 rounded-full hover:opacity-90 transition-opacity disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {status === "loading" ? "Sending..." : "Send Message"}
         </button>
