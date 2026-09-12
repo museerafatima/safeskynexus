@@ -13,15 +13,15 @@ const stats: Stat[] = [
 
 export default function StatsBar() {
   return (
-    <section className="max-w-container mx-auto px-6 py-10">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+    <section className="max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-y-8 gap-x-4 sm:gap-x-6 md:gap-x-8 text-center">
         {stats.map((stat) => (
-          <div key={stat.label}>
-            <p className="text-body text-sm mb-1">{stat.label}</p>
-            <p className="text-orange text-3xl md:text-4xl font-bold mb-1">
+          <div key={stat.label} className="px-2">
+            <p className="text-body text-xs sm:text-sm mb-1">{stat.label}</p>
+            <p className="text-orange text-2xl sm:text-3xl md:text-4xl font-bold mb-1 break-words">
               {stat.value}
             </p>
-            <p className="text-navy text-sm font-medium">{stat.caption}</p>
+            <p className="text-navy text-xs sm:text-sm font-medium">{stat.caption}</p>
           </div>
         ))}
       </div>

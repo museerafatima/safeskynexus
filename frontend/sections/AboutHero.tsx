@@ -2,15 +2,17 @@ import Image from "next/image";
 
 export default function AboutHero() {
   return (
-    <section className="max-w-container mx-auto px-6 py-16">
-      <div className="grid md:grid-cols-2 gap-10 items-center">
+    <section className="max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 md:py-16 lg:py-20">
+      <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-14 items-center">
         {/* Left: text */}
-        <div>
-          <p className="text-orange font-semibold mb-3">About Us</p>
-          <h1 className="text-navy text-4xl md:text-5xl font-bold leading-tight mb-6">
+        <div className="text-center lg:text-left">
+          <p className="text-orange font-semibold mb-2 sm:mb-3 text-sm sm:text-base">
+            About Us
+          </p>
+          <h1 className="text-navy text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-4 sm:mb-6">
             Engineering the Future of Autonomous Defense
           </h1>
-          <p className="text-body text-base leading-relaxed">
+          <p className="text-body text-sm sm:text-base lg:text-lg leading-relaxed max-w-xl mx-auto lg:mx-0">
             SafeSky Nexus Private Limited- SSN is a Pakistan based aerospace
             defense technology company dedicated to building the next
             generation of fully indigenous autonomous drone systems.
@@ -23,20 +25,20 @@ export default function AboutHero() {
         </div>
 
         {/* Right: drone image */}
-        <div className="w-full flex items-center justify-center">
+        <div className="w-full flex items-center justify-center order-first lg:order-last">
           <Image
             src="/images/drone-hero.png"
             alt="SafeSky Nexus autonomous drone"
             width={600}
             height={450}
-            className="w-full h-auto max-w-md"
+            className="w-full h-auto max-w-64 sm:max-w-sm md:max-w-md lg:max-w-lg"
             priority
           />
         </div>
       </div>
 
       {/* Bold centered statement */}
-      <p className="text-navy text-center font-semibold text-lg md:text-xl max-w-3xl mx-auto mt-14">
+      <p className="text-navy text-center font-semibold text-base sm:text-lg md:text-xl leading-relaxed max-w-3xl mx-auto mt-10 sm:mt-14 lg:mt-16">
         Intelligent, vision-based unmanned aerial systems that operate
         without GPS, ensuring secure, reliable, and mission-ready
         performance in the most challenging operational environments.
