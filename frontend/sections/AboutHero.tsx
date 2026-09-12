@@ -1,11 +1,12 @@
 import Image from "next/image";
+import Reveal from "@/components/Reveal";
 
 export default function AboutHero() {
   return (
     <section className="max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 md:py-16 lg:py-20">
       <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-14 items-center">
         {/* Left: text */}
-        <div className="text-center lg:text-left">
+        <Reveal className="text-center lg:text-left">
           <p className="text-orange font-semibold mb-2 sm:mb-3 text-sm sm:text-base">
             About Us
           </p>
@@ -22,27 +23,32 @@ export default function AboutHero() {
             was selected from thousands of applicants through a highly
             competitive nationwide program.
           </p>
-        </div>
+        </Reveal>
 
         {/* Right: drone image */}
-        <div className="w-full flex items-center justify-center order-first lg:order-last">
+        <Reveal
+          delay={150}
+          className="w-full flex items-center justify-center order-first lg:order-last"
+        >
           <Image
             src="/images/drone-hero.png"
             alt="SafeSky Nexus autonomous drone"
             width={600}
             height={450}
-            className="w-full h-auto max-w-64 sm:max-w-sm md:max-w-md lg:max-w-lg"
+            className="w-full h-auto max-w-64 sm:max-w-sm md:max-w-md lg:max-w-lg transition-transform duration-500 hover:scale-[1.03]"
             priority
           />
-        </div>
+        </Reveal>
       </div>
 
       {/* Bold centered statement */}
-      <p className="text-navy text-center font-semibold text-base sm:text-lg md:text-xl leading-relaxed max-w-3xl mx-auto mt-10 sm:mt-14 lg:mt-16">
-        Intelligent, vision-based unmanned aerial systems that operate
-        without GPS, ensuring secure, reliable, and mission-ready
-        performance in the most challenging operational environments.
-      </p>
+      <Reveal delay={250}>
+        <p className="text-navy text-center font-semibold text-base sm:text-lg md:text-xl leading-relaxed max-w-3xl mx-auto mt-10 sm:mt-14 lg:mt-16">
+          Intelligent, vision-based unmanned aerial systems that operate
+          without GPS, ensuring secure, reliable, and mission-ready
+          performance in the most challenging operational environments.
+        </p>
+      </Reveal>
     </section>
   );
 }

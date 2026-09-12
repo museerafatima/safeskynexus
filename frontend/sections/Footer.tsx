@@ -14,20 +14,29 @@ const systems = ["Delivery Systems", "Anti-Drone Systems"];
 
 const about = ["Mission", "Vission", "History", "Founder's Message"];
 
+const linkClasses =
+  "inline-block hover:text-white hover:translate-x-1 transition-all duration-200";
+
 export default function Footer() {
   return (
     <footer className="bg-navy text-white">
       <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[1.3fr_1fr_1fr_1fr_1fr] gap-x-6 gap-y-8 sm:gap-10">
         {/* Brand + contact */}
         <div className="col-span-2 sm:col-span-2 md:col-span-3 lg:col-span-1 flex flex-col gap-4">
-          <div className="bg-white rounded-md px-3 py-2 w-fit">
+          <div className="bg-white rounded-md px-3 py-2 w-fit transition-transform duration-200 hover:scale-105">
             <Image src={logo} alt="SafeSkyNexus logo" className="h-10 sm:h-12 w-auto" />
           </div>
           <div className="flex flex-col gap-2 text-sm text-white/90">
-            <a href="mailto:info@safeskynexus.com" className="flex items-center gap-2 hover:text-white">
+            <a
+              href="mailto:info@safeskynexus.com"
+              className="flex items-center gap-2 hover:text-white transition-colors duration-200 w-fit"
+            >
               <Mail size={16} className="shrink-0" /> info@safeskynexus.com
             </a>
-            <a href="tel:+923342388218" className="flex items-center gap-2 hover:text-white">
+            <a
+              href="tel:+923342388218"
+              className="flex items-center gap-2 hover:text-white transition-colors duration-200 w-fit"
+            >
               <Phone size={16} className="shrink-0" /> +92 334 2388218
             </a>
             <div className="flex items-start gap-2">
@@ -43,7 +52,7 @@ export default function Footer() {
           <ul className="space-y-2.5 sm:space-y-3 text-sm text-white/90">
             {drones.map((item) => (
               <li key={item}>
-                <Link href="#" className="hover:text-white">{item}</Link>
+                <Link href="#" className={linkClasses}>{item}</Link>
               </li>
             ))}
           </ul>
@@ -55,7 +64,7 @@ export default function Footer() {
           <ul className="space-y-2.5 sm:space-y-3 text-sm text-white/90">
             {systems.map((item) => (
               <li key={item}>
-                <Link href="#" className="hover:text-white">{item}</Link>
+                <Link href="#" className={linkClasses}>{item}</Link>
               </li>
             ))}
           </ul>
@@ -67,7 +76,7 @@ export default function Footer() {
           <ul className="space-y-2.5 sm:space-y-3 text-sm text-white/90">
             {about.map((item) => (
               <li key={item}>
-                <Link href="#" className="hover:text-white">{item}</Link>
+                <Link href="#" className={linkClasses}>{item}</Link>
               </li>
             ))}
           </ul>
@@ -77,7 +86,10 @@ export default function Footer() {
         <div>
           <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Quick Links</h4>
           <div className="flex flex-col gap-2.5 sm:gap-3 text-sm text-white/90">
-            <a href="#" className="flex items-center gap-2 hover:text-white">
+            <a
+              href="#"
+              className="flex items-center gap-2 hover:text-white hover:scale-105 transition-all duration-200 w-fit"
+            >
               <svg
                 width="18"
                 height="18"
@@ -93,7 +105,10 @@ export default function Footer() {
               </svg>
               Instagram
             </a>
-            <a href="#" className="flex items-center gap-2 hover:text-white">
+            <a
+              href="#"
+              className="flex items-center gap-2 hover:text-white hover:scale-105 transition-all duration-200 w-fit"
+            >
               <svg
                 width="18"
                 height="18"
