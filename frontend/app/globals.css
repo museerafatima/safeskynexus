@@ -1,33 +1,274 @@
 @import "tailwindcss";
 
-@theme inline {
+/* ==========================================================================
+   SAFESKY NEXUS — DESIGN SYSTEM
+   Single source of truth for colour, type, radius, shadow, spacing and motion.
+   Every page (Home / About / Contact) is built from these tokens only.
+   ========================================================================== */
+
+@theme {
+  /* ---- Typefaces -------------------------------------------------------
+     Geist carries all body copy; Poppins carries display/headings.
+     NOTE: --font-sans must be declared here or Tailwind's `font-sans`
+     (and therefore <body>) falls back to the browser default. */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo,
+    monospace;
+  --font-display: var(--font-poppins), var(--font-geist-sans), sans-serif;
+
+  /* ---- Brand palette ---------------------------------------------------
+     Navy is the structural colour. Orange is the single accent and is used
+     only for: the accent rule, the primary CTA, active nav state, focus. */
+  --color-navy-950: #08092a;
+  --color-navy-900: #0d0e3f;
   --color-navy: #121358;
-  --color-orange: #E67514;
-  --color-body: #1F1F1F;
-  --color-muted: #6B6B6B;
+  --color-navy-800: #1d1e6e;
+  --color-navy-700: #2c2d88;
+
+  --color-orange: #e67514;
+  --color-orange-600: #c2610f;
+  --color-orange-400: #f59842;
+
+  /* ---- Neutrals --------------------------------------------------------
+     `muted` is darkened from the original #6B6B6B so small text clears
+     WCAG AA (4.5:1) on white. */
+  --color-body: #1f1f1f;
+  --color-muted: #55585f;
+  --color-line: #e3e5ee;
+  --color-surface: #ffffff;
+  --color-surface-soft: #f4f5fa;
+
+  /* ---- Status ---------------------------------------------------------- */
+  --color-success: #12794f;
+  --color-danger: #c0271a;
+
+  /* ---- Layout ---------------------------------------------------------- */
   --container-container: 1280px;
+
+  /* ---- Radius ---------------------------------------------------------- */
+  --radius-card: 1rem;
+  --radius-panel: 1.5rem;
+
+  /* ---- Elevation -------------------------------------------------------
+     Three depths only. Navy-tinted, not neutral grey, so shadows belong
+     to the palette instead of sitting on top of it. */
+  --shadow-lift: 0 1px 2px rgba(8, 9, 42, 0.06),
+    0 12px 32px -14px rgba(8, 9, 42, 0.24);
+  --shadow-float: 0 2px 4px rgba(8, 9, 42, 0.08),
+    0 30px 60px -24px rgba(8, 9, 42, 0.45);
+  --shadow-glow: 0 10px 28px -12px rgba(230, 117, 20, 0.6);
+
+  /* ---- Motion ----------------------------------------------------------
+     One easing curve and three durations across the whole site. */
+  --ease-soft: cubic-bezier(0.22, 0.8, 0.3, 1);
 }
 
-body {
-  color: var(--color-body);
-  background: #ffffff;
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+@layer base {
+  /* Flex/grid children default to min-width:auto, which is the single most
+     common cause of mobile horizontal overflow. */
+  *,
+  *::before,
+  *::after {
+    min-width: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Sticky header height + breathing room for #anchor jumps */
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-body);
+    background: var(--color-surface);
+    /* `clip` (not `hidden`) contains stray overflow WITHOUT creating a
+       scroll container — position:sticky keeps working. */
+    overflow-x: clip;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* One focus treatment everywhere, on light and dark alike. */
+  :focus-visible {
+    outline: 2px solid var(--color-orange);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  ::selection {
+    background: var(--color-orange);
+    color: #fff;
+  }
+
+  img,
+  svg,
+  video,
+  iframe {
+    max-width: 100%;
+  }
 }
 
-h1, h2, h3, h4 {
-  font-family: var(--font-poppins), sans-serif;
+/* ==========================================================================
+   LAYOUT PRIMITIVES
+   Placed in @layer components so Tailwind utilities can still override them.
+   ========================================================================== */
+
+@layer components {
+  /* Horizontal rhythm — used by EVERY section on all three pages. */
+  .shell {
+    width: 100%;
+    max-width: var(--container-container);
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 3rem);
+  }
+
+  /* Vertical rhythm — three steps, fluid, no per-section guesswork. */
+  .section {
+    padding-block: clamp(4rem, 8vw, 8.5rem);
+  }
+  .section-tight {
+    padding-block: clamp(2.75rem, 5vw, 5rem);
+  }
+  .section-lead {
+    padding-block: clamp(5rem, 10vw, 10rem);
+  }
+
+  /* ---- Type scale ------------------------------------------------------
+     Fluid from 320px to 1600px. No fixed px headings anywhere. */
+  .type-display {
+    font-size: clamp(2.75rem, 7.6vw, 6.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    font-weight: 600;
+  }
+  .type-h1 {
+    font-size: clamp(2.25rem, 5.6vw, 4.5rem);
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    font-weight: 600;
+  }
+  .type-h2 {
+    font-size: clamp(1.875rem, 4.2vw, 3.5rem);
+    line-height: 1.06;
+    letter-spacing: -0.035em;
+    font-weight: 600;
+  }
+  .type-h3 {
+    font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+  }
+  .type-lede {
+    font-size: clamp(1rem, 0.85rem + 0.6vw, 1.2rem);
+    line-height: 1.7;
+    max-width: 60ch;
+  }
+  .type-body {
+    font-size: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
+    line-height: 1.75;
+    max-width: 68ch;
+  }
+
+  /* ---- Technical grid texture -----------------------------------------
+     Shared by Home hero, About hero and Contact hero. Cell size shrinks on
+     small screens so the texture reads as texture, not as a table. */
+  .grid-texture {
+    background-image: linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: clamp(40px, 6vw, 76px) clamp(40px, 6vw, 76px);
+  }
+  .grid-texture-dark {
+    --grid-line: rgba(255, 255, 255, 0.5);
+    opacity: 0.07;
+  }
+  .grid-texture-light {
+    --grid-line: rgba(18, 19, 88, 0.55);
+    opacity: 0.05;
+  }
+
+  /* ---- Depth helpers ---------------------------------------------------
+     `.stage` establishes the perspective a TiltCard tilts inside; without a
+     perspective ancestor a rotate reads as a flat skew. */
+  .stage {
+    perspective: 1400px;
+  }
+  .gpu {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform-style: preserve-3d;
+  }
+
+  /* The one piece of ambient (non-user-triggered) motion on the site:
+     a slow drift on the About hero platform. Disabled by the reduced-motion
+     block below, which zeroes animation-duration globally. */
+  .float-slow {
+    animation: ssn-float 7s var(--ease-soft) infinite;
+  }
+
+  /* Glow puck used behind the closing statement. */
+  .glow-orange {
+    background: radial-gradient(
+      circle,
+      rgba(230, 117, 20, 0.22),
+      transparent 68%
+    );
+  }
 }
-html {
-  scroll-behavior: smooth;
+
+@keyframes ssn-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0);
+  }
 }
+
+/* ==========================================================================
+   MOTION PREFERENCES
+   Declared once. (The original stylesheet shipped this block twice.)
+   ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  *, *::before, *::after {
+
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* Drop compositor hints on touch devices — `will-change` on many nodes costs
+   memory on phones and buys nothing, since the 3D effects are pointer-only. */
+@media (hover: none), (pointer: coarse) {
+  .will-change-transform {
+    will-change: auto;
   }
 }

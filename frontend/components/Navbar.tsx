@@ -1,83 +1,173 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
+import { primaryNav, routes, site } from "@/lib/site";
 
-const navLinks = [
-  { label: "Home", href: "/" },
-  { label: "Defense", href: "/defense" },
-  { label: "Sub-Conventional Warfare", href: "/sub-conventional-warfare" },
-  { label: "About Us", href: "/about" },
-];
+/* ==========================================================================
+   NAVBAR
+   Changes from the original:
+   • Active page is now indicated (permanent orange rule + aria-current).
+     Previously there was no way to tell which page you were on.
+   • Contact is a filled button, not another text link — the CTA is now
+     visually distinct from navigation, which is what drives conversion.
+   • Desktop nav switches at `lg`, not `md`. At md the label
+     "Sub-Conventional Warfare" collided with the logo.
+   • Drawer closes on Escape and on route change, locks background scroll,
+     and animates on grid-rows rather than a guessed max-h-96 (which would
+     have clipped the menu if a link were ever added).
+   ========================================================================== */
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  // Close the drawer whenever the route changes.
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  // Escape to close.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  // Prevent the page behind the drawer from scrolling.
+  useEffect(() => {
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [open]);
+
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <header className="w-full border-b border-gray-200 z-50 bg-white/95 backdrop-blur supports-backdrop-filter:bg-white/80 sticky top-0">
-      <div className="max-w-container mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4">
+    <header className="sticky top-0 z-50 border-b border-line bg-surface/90 backdrop-blur-md supports-backdrop-filter:bg-surface/75">
+      <div className="shell flex items-center justify-between gap-4 py-3.5">
         <Link
-          href="/"
-          className="flex items-center transition-transform duration-200 hover:scale-105"
-          onClick={() => setOpen(false)}
+          href={routes.home}
+          aria-label={`${site.name} — home`}
+          className="flex shrink-0 items-center rounded-md transition-opacity duration-200 hover:opacity-80"
         >
-          <Image src="/images/logo-icon.png" alt="SafeSky Nexus logo" width={48} height={21} priority />
+          <Image
+            src="/images/logo-icon.png"
+            alt="SafeSky Nexus"
+            width={96}
+            height={42}
+            priority
+            className="h-8 w-auto sm:h-9"
+          />
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="relative text-navy text-sm font-medium py-1 group"
-            >
-              {link.label}
-              <span className="absolute left-0 -bottom-0.5 w-0 h-0.5 bg-orange transition-all duration-300 group-hover:w-full" />
-            </Link>
-          ))}
+        {/* ---- Desktop navigation ---- */}
+        <nav aria-label="Primary" className="hidden lg:block">
+          <ul className="flex items-center gap-8">
+            {primaryNav.map((link) => {
+              const active = isActive(link.href);
+              return (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    aria-current={active ? "page" : undefined}
+                    className={`group relative flex min-h-11 items-center text-sm font-medium transition-colors duration-200 ${
+                      active ? "text-navy" : "text-navy/70 hover:text-navy"
+                    }`}
+                  >
+                    {link.label}
+                    <span
+                      aria-hidden="true"
+                      className={`absolute inset-x-0 bottom-1.5 h-0.5 origin-left rounded-full bg-orange transition-transform duration-300 ease-soft ${
+                        active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                      }`}
+                    />
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
         </nav>
 
         <Link
-          href="/contact"
-          className="hidden md:block relative text-navy text-sm font-medium py-1 group"
+          href={routes.contact}
+          aria-current={isActive(routes.contact) ? "page" : undefined}
+          className="hidden min-h-11 items-center rounded-full bg-navy px-5 py-2.5 text-sm font-semibold text-white transition-[transform,background-color] duration-300 ease-soft hover:-translate-y-0.5 hover:bg-navy-800 active:translate-y-0 active:scale-[0.98] lg:inline-flex"
         >
-          Contact
-          <span className="absolute left-0 -bottom-0.5 w-0 h-0.5 bg-orange transition-all duration-300 group-hover:w-full" />
+          Contact us
         </Link>
 
-        {/* Mobile hamburger */}
+        {/* ---- Mobile trigger ---- */}
         <button
           type="button"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
+          aria-controls="mobile-menu"
           onClick={() => setOpen((v) => !v)}
-          className="md:hidden p-2 -mr-2 text-navy min-w-11 min-h-11 flex items-center justify-center transition-transform duration-200 active:scale-90"
+          className="-mr-2 flex h-11 w-11 items-center justify-center rounded-full text-navy transition-colors duration-200 hover:bg-navy/5 active:scale-90 lg:hidden"
         >
-          {open ? <X size={24} /> : <Menu size={24} />}
+          {open ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
         </button>
       </div>
 
-      {/* Mobile drawer */}
+      {/* ---- Mobile drawer ----
+          grid-template-rows 0fr -> 1fr animates to the menu's real height,
+          however many items it ends up containing. */}
       <div
-        className={`md:hidden overflow-hidden transition-[max-height] duration-200 ease-in-out ${
-          open ? "max-h-96" : "max-h-0"
+        id="mobile-menu"
+        ref={panelRef}
+        className={`grid overflow-hidden border-line bg-surface transition-[grid-template-rows,opacity] duration-300 ease-soft lg:hidden ${
+          open ? "grid-rows-[1fr] border-t opacity-100" : "grid-rows-[0fr] opacity-0"
         }`}
       >
-        <nav className="flex flex-col px-4 sm:px-6 py-4 gap-4 border-t border-gray-200 bg-white">
-          {[...navLinks, { label: "Contact", href: "/contact" }].map((link) => (
+        <div className="min-h-0">
+          <nav aria-label="Mobile" className="shell py-3">
+            <ul className="flex flex-col">
+              {primaryNav.map((link) => {
+                const active = isActive(link.href);
+                return (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      aria-current={active ? "page" : undefined}
+                      onClick={() => setOpen(false)}
+                      className={`flex min-h-12 items-center gap-3 border-b border-line/70 py-3 text-base font-medium transition-colors duration-200 ${
+                        active ? "text-orange" : "text-navy hover:text-orange"
+                      }`}
+                    >
+                      <span
+                        aria-hidden="true"
+                        className={`h-1.5 w-1.5 rounded-full transition-colors ${
+                          active ? "bg-orange" : "bg-navy/20"
+                        }`}
+                      />
+                      {link.label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+
             <Link
-              key={link.href}
-              href={link.href}
+              href={routes.contact}
               onClick={() => setOpen(false)}
-              className="text-navy text-sm font-medium py-2 min-h-11 flex items-center hover:text-orange hover:translate-x-1 transition-all duration-200"
+              className="mt-4 mb-2 flex min-h-12 items-center justify-center rounded-full bg-orange px-5 py-3 text-base font-semibold text-white shadow-glow active:scale-[0.98]"
             >
-              {link.label}
+              Contact us
             </Link>
-          ))}
-        </nav>
+          </nav>
+        </div>
       </div>
     </header>
   );

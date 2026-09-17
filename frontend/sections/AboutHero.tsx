@@ -1,54 +1,80 @@
 import Image from "next/image";
 import Reveal from "@/components/Reveal";
+import { EyebrowBadge, SecondaryButton, PrimaryButton } from "@/components/HomeUI";
+import { routes } from "@/lib/site";
+
+/* ==========================================================================
+   ABOUT — HERO
+   Was a light, centre-aligned hero, which made About feel like a different
+   website to Home. It is now a dark, left-aligned hero using the same
+   badge, grid texture, type scale and button pair as Home's hero, so the
+   two pages open in the same voice.
+   ========================================================================== */
 
 export default function AboutHero() {
   return (
-    <section className="max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 md:py-16 lg:py-20">
-      <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-14 items-center">
-        {/* Left: text */}
-        <Reveal className="text-center lg:text-left">
-          <p className="text-orange font-semibold mb-2 sm:mb-3 text-sm sm:text-base">
-            About Us
-          </p>
-          <h1 className="text-navy text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-4 sm:mb-6">
-            Engineering the Future of Autonomous Defense
-          </h1>
-          <p className="text-body text-sm sm:text-base lg:text-lg leading-relaxed max-w-xl mx-auto lg:mx-0">
-            SafeSky Nexus Private Limited- SSN is a Pakistan based aerospace
-            defense technology company dedicated to building the next
-            generation of fully indigenous autonomous drone systems.
-            Incorporated under the Securities and Exchange Commission of
-            Pakistan (SECP) and incubated at the National Incubation Center
-            for Aerospace Technologies (NICAT), NASTP Rawalpindi, our company
-            was selected from thousands of applicants through a highly
-            competitive nationwide program.
-          </p>
-        </Reveal>
+    <section className="relative isolate overflow-hidden bg-navy-950 text-white">
+      <div
+        aria-hidden="true"
+        className="grid-texture grid-texture-dark absolute inset-0"
+      />
+      <div
+        aria-hidden="true"
+        className="glow-orange pointer-events-none absolute -right-24 top-0 h-128 w-lg max-w-none rounded-full blur-[120px]"
+      />
 
-        {/* Right: drone image */}
-        <Reveal
-          delay={150}
-          className="w-full flex items-center justify-center order-first lg:order-last"
-        >
-          <Image
-            src="/images/drone-hero.png"
-            alt="SafeSky Nexus autonomous drone"
-            width={600}
-            height={450}
-            className="w-full h-auto max-w-64 sm:max-w-sm md:max-w-md lg:max-w-lg transition-transform duration-500 hover:scale-[1.03]"
-            priority
-          />
+      <div className="shell section relative">
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-16">
+          {/* Text */}
+          <Reveal>
+            <EyebrowBadge>About us</EyebrowBadge>
+
+            <h1 className="type-h1 max-w-[16ch]">
+              Engineering the future of autonomous defense.
+            </h1>
+
+            <p className="type-body mt-7 text-white/75">
+              SafeSky Nexus Private Limited &mdash; SSN is a Pakistan-based
+              aerospace defense technology company dedicated to building the
+              next generation of fully indigenous autonomous drone systems.
+              Incorporated under the Securities and Exchange Commission of
+              Pakistan (SECP) and incubated at the National Incubation Center
+              for Aerospace Technologies (NICAT), NASTP Rawalpindi, our company
+              was selected from thousands of applicants through a highly
+              competitive nationwide program.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-3 sm:gap-4">
+              <PrimaryButton href={routes.contact}>Talk to our team</PrimaryButton>
+              <SecondaryButton href="#mission">What we&apos;re building</SecondaryButton>
+            </div>
+          </Reveal>
+
+          {/* Platform */}
+          <Reveal delay={120} className="order-first lg:order-last">
+            <div className="relative mx-auto w-full max-w-sm lg:max-w-lg">
+              <Image
+                src="/images/drone-hero.png"
+                alt="SafeSky Nexus autonomous drone platform"
+                width={640}
+                height={480}
+                priority
+                sizes="(max-width: 1024px) 70vw, 480px"
+                className="float-slow h-auto w-full drop-shadow-[0_30px_50px_rgba(8,9,42,0.7)]"
+              />
+            </div>
+          </Reveal>
+        </div>
+
+        {/* Positioning statement — the one line that explains the whole company */}
+        <Reveal delay={200}>
+          <p className="mx-auto mt-14 max-w-3xl border-l-2 border-orange pl-6 text-lg leading-relaxed text-white/85 sm:text-xl lg:mt-20">
+            Intelligent, vision-based unmanned aerial systems that operate
+            without GPS — secure, reliable and mission-ready in the most
+            challenging operational environments.
+          </p>
         </Reveal>
       </div>
-
-      {/* Bold centered statement */}
-      <Reveal delay={250}>
-        <p className="text-navy text-center font-semibold text-base sm:text-lg md:text-xl leading-relaxed max-w-3xl mx-auto mt-10 sm:mt-14 lg:mt-16">
-          Intelligent, vision-based unmanned aerial systems that operate
-          without GPS, ensuring secure, reliable, and mission-ready
-          performance in the most challenging operational environments.
-        </p>
-      </Reveal>
     </section>
   );
 }
