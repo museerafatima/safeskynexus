@@ -215,7 +215,7 @@ export default function Footer() {
                       title={`${social.label} — coming soon`}
                       className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 text-white/35"
                     >
-                      <Icon className="h-[1.125rem] w-[1.125rem]" aria-hidden="true" />
+                      <Icon className="h-4.5 w-4.5" aria-hidden="true" />
                       <span className="sr-only">{social.label}</span>
                     </span>
                   </li>
@@ -231,7 +231,7 @@ export default function Footer() {
                     aria-label={`${site.name} on ${social.label}`}
                     className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-white/70 transition-[color,border-color,background-color,transform] duration-200 hover:-translate-y-0.5 hover:border-orange hover:bg-orange hover:text-white"
                   >
-                    <Icon className="h-[1.125rem] w-[1.125rem]" aria-hidden="true" />
+                    <Icon className="h-4.5 w-4.5" aria-hidden="true" />
                   </a>
                 </li>
               );

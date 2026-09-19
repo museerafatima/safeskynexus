@@ -29,9 +29,9 @@ export const site = {
 export const contact = {
   email: "info@safeskynexus.com",
   /** Human-readable. Must describe the same number as `phoneHref`. */
-  phone: "+92 334 2388218",
+  phone: "+92 314 9678999",
   /** E.164, no spaces — used for the tel: link. */
-  phoneHref: "+923342388218",
+  phoneHref: "+923149678999",
   address: "Alpha Square, NICAT, NASTP, Rawalpindi, Pakistan",
   /** Short form used in the stats band. */
   campus: "NASTP, Rawalpindi",

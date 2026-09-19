@@ -1,594 +1,703 @@
+import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import HeroBackgroundVideo from "@/components/HeroBackgroundVideo";
+import ImageSlideshow from "@/components/ImageSlideshow";
+import Reveal from "@/components/Reveal";
 import {
   ArrowDown,
+  ArrowRight,
   ArrowUpRight,
   Eye,
   Layers3,
   Navigation,
   Radar,
   Shield,
+  Sparkles,
   Target,
+  Zap,
 } from "lucide-react";
-import TiltCard from "@/components/TiltCard";
-import ParallaxImage from "@/components/ParallaxImage";
-import Reveal from "@/components/Reveal";
-import {
-  EyebrowBadge,
-  PrimaryButton,
-  SecondaryButton,
-  SectionLabel,
-  Surface,
-  TextLink,
-} from "@/components/HomeUI";
-import { routes } from "@/lib/site";
-
-/* ==========================================================================
-   HOME
-   Section rhythm (surface alternation is what unifies the three pages):
-     1  Hero .................. navy-deep
-     2  Positioning ........... navy-deep   (continuous with the hero)
-     3  Featured platform ..... navy
-     4  Capabilities .......... white
-     5  Ecosystem ............. navy-deep
-     6  Applications .......... white
-     7  Engineering in action . soft
-     8  About teaser .......... white
-     9  Closing statement + CTA navy
-   ========================================================================== */
-
-/* The "Explore technology" links previously pointed at /products, which is not
-   a route in this app (the nav ships /defense and /sub-conventional-warfare).
-   They now point at the closest real destination. Change this one constant if
-   a dedicated products page is added later. */
-const explorePath = routes.defense;
-
-const products = [
-  {
-    name: "Autonomous aerial systems",
-    category: "Aerial platform",
-    description:
-      "Intelligent aerial platforms designed around autonomous flight, real-time perception, and mission-ready control.",
-    image: "/images/drone-hero.png",
-  },
-  {
-    name: "Autonomous navigation",
-    category: "Navigation system",
-    description:
-      "Advanced navigation built to help autonomous systems understand and respond to their environment.",
-    image: "/images/drone-navigation.png",
-  },
-  {
-    name: "Mission control",
-    category: "Control system",
-    description:
-      "A connected control layer for monitoring, operating, and managing autonomous platforms.",
-    image: "/images/mission-control.png",
-  },
-];
 
 const capabilities = [
   {
+    number: "01",
     icon: Eye,
     title: "Perception",
     description:
-      "Real-time environmental awareness that lets autonomous systems understand their surroundings.",
+      "Real-time environmental awareness that enables autonomous systems to understand their surroundings.",
   },
   {
+    number: "02",
     icon: Navigation,
     title: "Navigation",
     description:
-      "Navigation technologies built for reliable autonomous movement and mission execution.",
+      "Intelligent navigation technologies designed for reliable autonomous movement and mission execution.",
   },
   {
+    number: "03",
     icon: Layers3,
     title: "Autonomy",
     description:
-      "Integrated software and hardware that lets platforms decide with less operator dependency.",
+      "Integrated software and hardware systems that allow platforms to make decisions with reduced operator dependency.",
   },
   {
+    number: "04",
     icon: Radar,
-    title: "Mission intelligence",
+    title: "Mission Intelligence",
     description:
-      "Turning platform data into information an operator can act on, during the operation.",
-  },
-];
-
-const applications = [
-  {
-    icon: Shield,
-    title: "Defense & security",
-    description:
-      "Autonomous technology for surveillance, situational awareness, and mission-focused operations.",
-    image: "/images/defense-drone.png",
-    alt: "Autonomous system configured for a defence mission",
-    href: routes.defense,
-  },
-  {
-    icon: Target,
-    title: "Industrial operations",
-    description:
-      "Intelligent aerial systems for inspection, monitoring, mapping, and complex operational environments.",
-    image: "/images/industrial-drone.png",
-    alt: "Autonomous system configured for industrial inspection",
-    href: routes.subConventional,
+      "Technology focused on turning platform data into actionable information during operations.",
   },
 ];
 
 /* Real photographs — bench build and live media coverage.
-   Drop the two files into /public/images/ using these exact names. */
+   `images` accepts one entry (static) or several (auto-crossfading).
+   `intervalMs` sets how long each card lingers on an image before
+   crossfading to the next. Drop new files into /public/images/ and add
+   their paths to the array — nothing else needs to change. */
 const proofPoints = [
   {
-    image: "/images/rd-lab-build.jpg",
-    category: "Engineering",
+    images: [
+      { src: "/images/rd-lab-build-1.jpg", alt: "SafeSky Nexus team soldering motor connections on the bench" },
+      { src: "/images/rd-lab-build-2.jpg", alt: "SafeSky Nexus engineers assembling an airframe together" },
+      { src: "/images/rd-lab-build-3.jpg", alt: "SafeSky Nexus autonomous platform on the bench with flight-planning software" },
+    ],
+    intervalMs: 3000,
+    category: "ENGINEERING",
     title: "Built in-house, tested in-house",
     description:
       "Every airframe starts on our own bench — designed, wired, and flown by the team before it reaches the field.",
   },
   {
-    image: "/images/media-feature.jpg",
-    category: "In the field",
-    title: "SafeSky Neuron, in the spotlight",
+    images: [
+      { src: "/images/media-feature.jpg", alt: "SafeSky Nexus presenting to ARY News at NUTECH" },
+      { src: "/images/media-feature-2.jpg", alt: "SafeSky Nexus discussed on Suno News, covering the platform's commercial launch" },
+      { src: "/images/media-feature-3.jpg", alt: "SafeSky Nexus founder speaking with BOL News at a technology expo" },
+      { src: "/images/media-feature-4.jpg", alt: "SafeSky Nexus featured on GTV News discussing autonomous aerial technology" },
+    ],
+    intervalMs: 3000,
+    category: "MEDIA & PRESS",
+    title: "SafeSky Nexus, in the media",
     description:
-      "Presenting our autonomous obstacle-avoidance platform live at NUTECH, drawing national media coverage.",
+      "From broadcast interviews to industry events, our founder shares the vision behind SafeSky Nexus with audiences across Pakistan.",
   },
 ];
 
+function SectionLabel({ children }: { children: ReactNode }) {
+  return (
+    <div className="mb-5 flex items-center gap-3">
+      <span className="h-px w-8 bg-orange" />
+
+      <span className="text-xs font-semibold uppercase tracking-[0.2em] text-orange">
+        {children}
+      </span>
+    </div>
+  );
+}
+
+function PrimaryButton({
+  href,
+  children,
+}: {
+  href: string;
+  children: ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      className="group inline-flex items-center gap-3 rounded-full bg-orange px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:brightness-110"
+    >
+      {children}
+
+      <ArrowUpRight
+        size={17}
+        className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+      />
+    </Link>
+  );
+}
+
+function SecondaryButton({
+  href,
+  children,
+}: {
+  href: string;
+  children: ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      className="group inline-flex items-center gap-3 rounded-full border border-white/20 px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:border-white/40 hover:bg-white/5"
+    >
+      {children}
+
+      <ArrowRight
+        size={17}
+        className="transition-transform duration-300 group-hover:translate-x-1"
+      />
+    </Link>
+  );
+}
+
 export default function Home() {
   return (
-    <main id="content">
-      {/* ==================== 1. HERO ==================== */}
-      <section className="relative isolate bg-navy-950 text-white">
-        <div className="absolute inset-0 -z-10">
-          <ParallaxImage
-            src="/images/drone-hero.png"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
-            intensity={0.06}
-          />
-          {/* Three stacked scrims: overall darkening, a left-weighted ramp so
-              the headline always has contrast, and a base fade into the next
-              section so the seam disappears. */}
-          <div className="absolute inset-0 bg-navy-950/55" />
-          <div className="absolute inset-0 bg-linear-to-r from-navy-950 via-navy-950/70 to-navy-950/10" />
-          <div className="absolute inset-0 bg-linear-to-t from-navy-950 via-transparent to-navy-950/40" />
-          <div
-            aria-hidden="true"
-            className="grid-texture grid-texture-dark absolute inset-0"
-          />
+    <main className="overflow-hidden bg-navy-950 text-white">
+
+      {/* ========================= HERO ========================= */}
+      <section className="relative min-h-[calc(100vh-80px)] overflow-hidden">
+
+        {/* Background */}
+        <div className="absolute inset-0 overflow-hidden bg-navy-950">
+          <HeroBackgroundVideo />
+
+          <div className="absolute inset-0 bg-black/45" />
+
+          <div className="absolute inset-0 bg-linear-to-r from-black via-black/55 to-transparent" />
+
+          <div className="absolute inset-0 bg-linear-to-t from-navy-950 via-transparent to-black/10" />
         </div>
 
-        <div className="shell flex min-h-[min(88svh,46rem)] flex-col justify-end pb-16 pt-20 sm:pb-20 lg:min-h-[min(90svh,52rem)] lg:pb-24">
-          <Reveal>
-            <EyebrowBadge>Autonomous aerospace technology</EyebrowBadge>
+        {/* Technical grid */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.08]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+            backgroundSize: "80px 80px",
+          }}
+        />
 
-            <h1 className="type-display max-w-[16ch]">
+        <div className="relative mx-auto flex min-h-[calc(100vh-80px)] max-w-container items-end px-6 pb-20 pt-28 lg:px-12 lg:pb-24">
+          <Reveal className="max-w-4xl">
+
+            <div className="mb-8 flex items-center gap-3">
+              <span className="h-2 w-2 rounded-full bg-orange shadow-[0_0_14px_rgba(230,117,20,0.8)]" />
+
+              <span className="text-xs font-medium uppercase tracking-[0.25em] text-white/70">
+                Autonomous Aerospace Technology
+              </span>
+            </div>
+
+            <h1 className="max-w-5xl text-5xl font-semibold leading-[0.95] tracking-[-0.045em] sm:text-6xl md:text-7xl lg:text-[7.2rem]">
               Intelligence
               <br />
-              <span className="text-white/45">in motion.</span>
+              <span className="text-white/55">in motion.</span>
             </h1>
 
-            <p className="type-lede mt-7 text-white/75">
-              SafeSky Nexus develops autonomous aerial and intelligent systems
-              built to perceive, navigate, and operate in demanding
+            <p className="mt-8 max-w-xl text-base leading-7 text-white/65 sm:text-lg">
+              SafeSky Nexus develops autonomous aerial and intelligent
+              systems built to perceive, navigate, and operate in demanding
               environments.
             </p>
 
-            <div className="mt-9 flex flex-wrap gap-3 sm:gap-4">
-              <PrimaryButton href={explorePath}>
-                Explore the technology
+            <div className="mt-10 flex flex-wrap gap-4">
+              <PrimaryButton href="/products">
+                Explore technology
               </PrimaryButton>
-              <SecondaryButton href={routes.contact}>
+
+              <SecondaryButton href="/contact">
                 Talk to our team
               </SecondaryButton>
             </div>
           </Reveal>
         </div>
 
-        {/* Desktop-only scroll cue. Hidden on touch, where it means nothing. */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-7 hidden items-center justify-between lg:flex"
-        >
-          <div className="shell flex w-full items-center justify-between">
-            <span className="font-mono text-[0.625rem] uppercase tracking-[0.2em] text-white/35">
-              SSN / 01
-            </span>
-            <span className="flex items-center gap-3 text-[0.6875rem] uppercase tracking-[0.18em] text-white/50">
-              Scroll to explore
-              <ArrowDown size={14} className="animate-bounce" />
-            </span>
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 right-6 hidden items-center gap-4 text-xs text-white/45 lg:flex">
+          <span>SCROLL TO EXPLORE</span>
+          <ArrowDown size={15} className="animate-bounce" />
+        </div>
+
+        <div className="absolute bottom-8 left-6 hidden text-[10px] font-mono uppercase tracking-[0.2em] text-white/30 lg:block">
+          SSN / 01
+        </div>
+      </section>
+
+      {/* ========================= INTRO ========================= */}
+      <section className="relative bg-navy-950 py-28 lg:py-40">
+        <div className="mx-auto max-w-container px-6 lg:px-12">
+
+          <Reveal className="mb-12 lg:mb-16">
+            <SectionLabel>SafeSky Nexus</SectionLabel>
+
+            <p className="text-sm uppercase tracking-[0.18em] text-white/35">
+              Engineering autonomous systems
+            </p>
+          </Reveal>
+
+          <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16">
+
+            <Reveal delay={90}>
+              <h2 className="max-w-2xl text-3xl font-medium leading-[1.08] tracking-[-0.03em] text-white sm:text-4xl lg:text-6xl">
+                We create technology that gives autonomous platforms the
+                ability to{" "}
+                <span className="text-white/35">
+                  see, understand and move.
+                </span>
+              </h2>
+
+              <p className="mt-8 max-w-xl text-base leading-7 text-white/50">
+                From autonomous flight systems to intelligent navigation and
+                mission control, our work brings hardware and software
+                together into one connected technology ecosystem.
+              </p>
+            </Reveal>
+
+            {/* Exploded-assembly render — same card language used elsewhere
+                on the page (rounded corners, subtle border, bottom fade,
+                pill tag with the brand dot) so it reads as part of this
+                site rather than a dropped-in graphic. */}
+            <Reveal delay={160} className="group relative aspect-16/10 overflow-hidden rounded-2xl border border-white/10 bg-black">
+              <Image
+                src="/images/exploded-assembly.jpg"
+                alt="Exploded 3D render of a SafeSky Nexus drone frame, showing its motors, arms, and internal wiring separated for assembly"
+                fill
+                sizes="(max-width: 1024px) 100vw, 45vw"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              />
+
+              <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black via-black/10 to-transparent" />
+
+              <div className="absolute left-5 top-5 inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-black/30 px-4 py-2 backdrop-blur-md">
+                <span className="h-1.5 w-1.5 rounded-full bg-orange" />
+                <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-white/70">
+                  System architecture
+                </span>
+              </div>
+            </Reveal>
+
           </div>
         </div>
       </section>
 
-      {/* ==================== 2. POSITIONING ==================== */}
-      <Surface variant="navy-deep" className="section">
-        <div className="shell">
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,0.6fr)_minmax(0,1.4fr)] lg:items-end lg:gap-16">
-            <Reveal>
-              <SectionLabel>SafeSky Nexus</SectionLabel>
-              <p className="text-sm leading-6 text-white/55">
-                Engineering autonomous systems from the airframe up.
-              </p>
-            </Reveal>
+      {/* ========================= FEATURED TECHNOLOGY ========================= */}
+      <section className="bg-navy py-20 lg:py-28">
+        <div className="mx-auto max-w-container px-6 lg:px-12">
 
-            <Reveal delay={90}>
-              <h2 className="type-h2">
-                We build the technology that lets autonomous platforms{" "}
-                <span className="text-white/40">
-                  see, understand and move.
-                </span>
-              </h2>
-              <p className="type-body mt-7 text-white/70">
-                From autonomous flight systems to intelligent navigation and
-                mission control, our work brings hardware and software together
-                into one connected technology ecosystem.
-              </p>
-            </Reveal>
-          </div>
-        </div>
-      </Surface>
+          <Reveal className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
 
-      {/* ==================== 3. FEATURED PLATFORM ==================== */}
-      <Surface variant="navy" className="section">
-        <div className="shell">
-          <Reveal className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
             <div>
-              <SectionLabel>Featured technology</SectionLabel>
-              <h2 className="type-h2">Built for autonomy.</h2>
+              <SectionLabel>Featured Technology</SectionLabel>
+
+              <h2 className="text-4xl font-semibold tracking-[-0.035em] sm:text-5xl lg:text-6xl">
+                Built for autonomy.
+              </h2>
             </div>
-            <TextLink href={explorePath} dark>
+
+            <Link
+              href="/products"
+              className="group flex items-center gap-2 text-sm font-semibold text-white/60 transition-colors hover:text-white"
+            >
               View all technology
-            </TextLink>
+
+              <ArrowRight
+                size={16}
+                className="transition-transform group-hover:translate-x-1"
+              />
+            </Link>
+
           </Reveal>
 
-          <Reveal delay={90} className="stage">
-            <article className="group relative isolate min-h-104 overflow-hidden rounded-panel bg-navy-950 sm:min-h-128 lg:min-h-144">
-              <Image
-                src="/images/drone-hero.png"
-                alt="SafeSky Nexus autonomous aerial platform in flight"
-                fill
-                sizes="(max-width: 1280px) 100vw, 1280px"
-                className="object-cover object-center transition-transform duration-1100 ease-soft group-hover:scale-[1.04]"
-              />
-              <div className="absolute inset-0 bg-linear-to-t from-navy-950 via-navy-950/35 to-transparent" />
+          <Reveal delay={90} className="group relative min-h-140 overflow-hidden rounded-2xl bg-black">
 
-              <div className="absolute left-5 top-5 inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-navy-950/40 px-4 py-2 backdrop-blur-md sm:left-7 sm:top-7">
-                <span
-                  aria-hidden="true"
-                  className="h-1.5 w-1.5 rounded-full bg-orange"
-                />
-                <span className="text-[0.625rem] font-semibold uppercase tracking-[0.18em] text-white/80">
-                  Technology platform
-                </span>
-              </div>
+            {/* Blurred, scaled-up copy of the same clip fills the frame edge
+                to edge. Needed because the source clip is portrait
+                (720x1280) with captions burned into the footage ("SafeSky
+                Nexus", the site URL) — a plain object-cover crop on a wide
+                card would very likely cut those captions off, along with
+                a large part of the drone itself. This layer is purely
+                decorative backdrop, so it's hidden from screen readers. */}
+            <video
+              aria-hidden="true"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              poster="/images/drone-hero.png"
+              className="absolute inset-0 h-full w-full scale-110 object-cover object-center blur-2xl brightness-[0.55] transition-transform duration-1200 ease-out group-hover:scale-[1.18]"
+            >
+              <source src="/videos/featured-platform.mp4" type="video/mp4" />
+            </video>
 
-              <div className="absolute inset-x-0 bottom-0 p-6 sm:p-9 lg:p-12">
-                <div className="max-w-2xl">
-                  <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-orange">
-                    Autonomous aerial systems
-                  </p>
-                  <h3 className="type-h2">Designed around intelligence.</h3>
-                  <p className="type-body mt-4 text-white/75">
-                    Aerial platforms engineered to combine perception,
-                    navigation, control, and mission intelligence into a single
-                    connected system.
-                  </p>
-                  <TextLink href={explorePath} dark className="mt-5">
-                    Discover the platform
-                  </TextLink>
-                </div>
+            {/* The actual video, shown complete and uncropped — every
+                caption and the full drone stay visible regardless of the
+                card's width. */}
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              poster="/images/drone-hero.png"
+              aria-label="SafeSky Nexus autonomous aerial platform being assembled and readied for flight"
+              className="absolute inset-0 h-full w-full object-contain object-center"
+            >
+              <source src="/videos/featured-platform.mp4" type="video/mp4" />
+            </video>
+
+            <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black via-black/25 to-transparent" />
+
+            <div className="absolute left-6 top-6 flex items-center gap-3 rounded-full border border-white/15 bg-black/30 px-4 py-2 backdrop-blur-md">
+              <span className="h-1.5 w-1.5 rounded-full bg-orange" />
+
+              <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-white/70">
+                Technology platform
+              </span>
+            </div>
+
+            <div className="pointer-events-none absolute bottom-0 left-0 right-0 p-7 sm:p-10 lg:p-14">
+
+              <div className="pointer-events-auto max-w-2xl">
+
+                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-orange">
+                  Autonomous aerial systems
+                </p>
+
+                <h3 className="text-3xl font-semibold tracking-[-0.03em] sm:text-4xl lg:text-5xl">
+                  Designed around intelligence.
+                </h3>
+
+                <p className="mt-5 max-w-xl text-sm leading-6 text-white/60 sm:text-base">
+                  Aerial platforms engineered to combine perception,
+                  navigation, control, and mission intelligence into a
+                  connected autonomous system.
+                </p>
+
+                <Link
+                  href="/products"
+                  className="group mt-8 inline-flex items-center gap-3 text-sm font-semibold text-white"
+                >
+                  Discover the platform
+
+                  <ArrowRight
+                    size={17}
+                    className="transition-transform duration-300 group-hover:translate-x-1"
+                  />
+                </Link>
+
               </div>
-            </article>
+            </div>
           </Reveal>
         </div>
-      </Surface>
+      </section>
 
-      {/* ==================== 4. CAPABILITIES ==================== */}
-      <Surface variant="white" className="section">
-        <div className="shell">
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,0.62fr)_minmax(0,1.38fr)] lg:gap-16">
+      {/* ========================= CAPABILITIES ========================= */}
+      <section className="bg-white py-24 text-body lg:py-32">
+        <div className="mx-auto max-w-container px-6 lg:px-12">
+
+          <div className="grid gap-14 lg:grid-cols-[0.65fr_1.35fr]">
+
             <Reveal>
               <SectionLabel>Core capabilities</SectionLabel>
-              <h2 className="type-h2 max-w-[14ch] text-navy">
+
+              <h2 className="max-w-md text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl">
                 The technology behind autonomous systems.
               </h2>
-              <p className="type-body mt-5 max-w-sm text-muted">
+
+              <p className="mt-6 max-w-sm text-sm leading-6 text-muted">
                 Our approach combines sensing, intelligence, navigation, and
                 control into integrated technology designed for real-world
                 operation.
               </p>
             </Reveal>
 
-            <Reveal delay={90}>
-              <ul className="divide-y divide-line border-y border-line">
-                {capabilities.map((capability) => {
-                  const Icon = capability.icon;
-                  return (
-                    <li
-                      key={capability.title}
-                      className="group grid gap-4 py-7 sm:grid-cols-[3.5rem_minmax(0,1fr)] sm:gap-6"
+            <div className="divide-y divide-body/10 border-y border-body/10">
+
+              {capabilities.map((capability, index) => {
+                const Icon = capability.icon;
+
+                return (
+                  <Reveal key={capability.number} delay={index * 80}>
+                    <div
+                      className="group grid gap-6 py-8 transition-all duration-300 hover:px-3 md:grid-cols-[70px_60px_1fr] md:items-start"
                     >
-                      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-line text-navy transition-[background-color,border-color,color,transform,box-shadow] duration-300 ease-soft group-hover:-translate-y-0.5 group-hover:border-orange group-hover:bg-orange group-hover:text-white group-hover:shadow-glow">
-                        <Icon size={20} strokeWidth={1.5} aria-hidden="true" />
+                      <span className="font-mono text-xs text-muted/50">
+                        {capability.number}
                       </span>
+
+                      <div className="flex h-11 w-11 items-center justify-center rounded-full border border-body/10 transition-all duration-300 group-hover:border-orange group-hover:bg-orange group-hover:text-white">
+                        <Icon size={19} strokeWidth={1.5} />
+                      </div>
+
                       <div>
-                        <h3 className="type-h3 text-navy">
+                        <h3 className="text-xl font-semibold tracking-tight">
                           {capability.title}
                         </h3>
-                        <p className="type-body mt-2 text-muted">
+
+                        <p className="mt-2 max-w-xl text-sm leading-6 text-muted">
                           {capability.description}
                         </p>
                       </div>
-                    </li>
-                  );
-                })}
-              </ul>
-            </Reveal>
-          </div>
-        </div>
-      </Surface>
+                    </div>
+                  </Reveal>
+                );
+              })}
 
-      {/* ==================== 5. ECOSYSTEM ==================== */}
-      <Surface variant="navy-deep" className="section">
-        <div className="shell">
-          <Reveal className="mb-11 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-            <div>
-              <SectionLabel>Technology ecosystem</SectionLabel>
-              <h2 className="type-h2">
-                One ecosystem.
-                <br />
-                <span className="text-white/40">Multiple possibilities.</span>
-              </h2>
             </div>
-            <p className="max-w-sm text-sm leading-6 text-white/60">
-              The systems and technologies that make up the SafeSky Nexus
-              platform.
-            </p>
-          </Reveal>
-
-          <div className="stage grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {products.map((product, index) => {
-              const wide = index === 0;
-              return (
-                <Reveal
-                  key={product.name}
-                  delay={index * 80}
-                  className={`h-full ${wide ? "md:col-span-2" : ""}`}
-                >
-                  <TiltCard
-                    maxTilt={4}
-                    className="group h-full overflow-hidden rounded-panel bg-navy-800 shadow-none transition-shadow duration-500 ease-soft hover:shadow-float"
-                  >
-                    <Link
-                      href={explorePath}
-                      className="block h-full focus-visible:outline-none"
-                    >
-                      <div
-                        className={`relative ${
-                          wide ? "aspect-16/10" : "aspect-4/5"
-                        }`}
-                      >
-                        <Image
-                          src={product.image}
-                          alt={product.name}
-                          fill
-                          sizes={
-                            wide
-                              ? "(max-width: 768px) 100vw, (max-width: 1280px) 66vw, 840px"
-                              : "(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 420px"
-                          }
-                          loading="lazy"
-                          className="object-cover transition-transform duration-700 ease-soft group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-linear-to-t from-navy-950 via-navy-950/25 to-transparent" />
-
-                        <div className="absolute inset-x-5 top-5 flex items-start justify-between gap-3 sm:inset-x-7 sm:top-7">
-                          <span className="text-[0.625rem] font-semibold uppercase tracking-[0.2em] text-white/70">
-                            {product.category}
-                          </span>
-                          <span
-                            aria-hidden="true"
-                            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/20 bg-navy-950/30 backdrop-blur-md transition-[background-color,color] duration-300 group-hover:bg-orange"
-                          >
-                            <ArrowUpRight size={15} />
-                          </span>
-                        </div>
-
-                        <div className="absolute inset-x-5 bottom-5 sm:inset-x-7 sm:bottom-7">
-                          <h3 className="type-h3 text-white">
-                            {product.name}
-                          </h3>
-                          <p className="mt-2.5 max-w-md text-sm leading-6 text-white/70">
-                            {product.description}
-                          </p>
-                        </div>
-                      </div>
-                    </Link>
-                  </TiltCard>
-                </Reveal>
-              );
-            })}
           </div>
         </div>
-      </Surface>
+      </section>
 
-      {/* ==================== 6. APPLICATIONS ==================== */}
-      <Surface variant="white" className="section">
-        <div className="shell">
-          <Reveal className="mb-11 max-w-3xl">
+      {/* ========================= APPLICATIONS ========================= */}
+      <section className="border-t border-body/5 bg-white py-24 text-body lg:py-32">
+        <div className="mx-auto max-w-container px-6 lg:px-12">
+
+          <Reveal className="mb-14 max-w-3xl">
             <SectionLabel>Where it matters</SectionLabel>
-            <h2 className="type-h2 text-navy">
-              Technology for environments where decisions matter.
+
+            <h2 className="text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl lg:text-6xl">
+              Technology designed for environments where decisions matter.
             </h2>
           </Reveal>
 
-          <div className="stage grid gap-4 md:grid-cols-2">
-            {applications.map((application, index) => {
-              const Icon = application.icon;
-              return (
-                <Reveal key={application.title} delay={index * 90} className="h-full">
-                  <TiltCard
-                    maxTilt={4}
-                    className="group h-full overflow-hidden rounded-panel bg-navy text-white shadow-lift transition-shadow duration-500 ease-soft hover:shadow-float"
-                  >
-                    <Link
-                      href={application.href}
-                      className="block h-full focus-visible:outline-none"
-                    >
-                      <div className="relative min-h-96 sm:min-h-112">
-                        <Image
-                          src={application.image}
-                          alt={application.alt}
-                          fill
-                          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 640px"
-                          loading="lazy"
-                          className="object-cover opacity-75 transition-transform duration-700 ease-soft group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-linear-to-t from-navy-950 via-navy-950/40 to-transparent" />
+          <div className="grid gap-5 md:grid-cols-2">
 
-                        <div className="absolute inset-x-6 bottom-6 sm:inset-x-8 sm:bottom-8">
-                          <span className="mb-5 flex h-11 w-11 items-center justify-center rounded-full border border-white/25 transition-[background-color,border-color] duration-300 group-hover:border-orange group-hover:bg-orange">
-                            <Icon size={19} strokeWidth={1.5} aria-hidden="true" />
-                          </span>
-                          <h3 className="type-h3">{application.title}</h3>
-                          <p className="mt-2.5 max-w-md text-sm leading-6 text-white/75">
-                            {application.description}
-                          </p>
-                        </div>
-                      </div>
-                    </Link>
-                  </TiltCard>
-                </Reveal>
-              );
-            })}
+            {/* Defense */}
+            <Reveal delay={0} className="group relative min-h-110 overflow-hidden rounded-2xl bg-navy text-white">
+
+              <Image
+                src="/images/defense-drone.png"
+                alt="Autonomous systems for demanding missions"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover opacity-70 transition-transform duration-700 group-hover:scale-105"
+              />
+
+              <div className="absolute inset-0 bg-linear-to-t from-black via-black/30 to-transparent" />
+
+              <div className="absolute bottom-8 left-8 right-8">
+
+                <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-full border border-white/20">
+                  <Shield size={19} strokeWidth={1.5} />
+                </div>
+
+                <h3 className="text-3xl font-semibold tracking-tight">
+                  Defense &amp; Security
+                </h3>
+
+                <p className="mt-3 max-w-md text-sm leading-6 text-white/55">
+                  Autonomous technology for surveillance, situational
+                  awareness, and mission-focused operations.
+                </p>
+
+              </div>
+            </Reveal>
+
+            {/* Industrial */}
+            <Reveal delay={90} className="group relative min-h-110 overflow-hidden rounded-2xl bg-navy text-white">
+
+              <Image
+                src="/images/industrial-drone.png"
+                alt="Autonomous systems for industrial applications"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover opacity-70 transition-transform duration-700 group-hover:scale-105"
+              />
+
+              <div className="absolute inset-0 bg-linear-to-t from-black via-black/30 to-transparent" />
+
+              <div className="absolute bottom-8 left-8 right-8">
+
+                <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-full border border-white/20">
+                  <Target size={19} strokeWidth={1.5} />
+                </div>
+
+                <h3 className="text-3xl font-semibold tracking-tight">
+                  Industrial Operations
+                </h3>
+
+                <p className="mt-3 max-w-md text-sm leading-6 text-white/55">
+                  Intelligent aerial systems for inspection, monitoring,
+                  mapping, and complex operational environments.
+                </p>
+
+              </div>
+            </Reveal>
+
           </div>
         </div>
-      </Surface>
+      </section>
 
-      {/* ==================== 7. ENGINEERING IN ACTION ==================== */}
-      <Surface variant="soft" className="section">
-        <div className="shell">
-          <Reveal className="mb-11 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+      {/* ========================= ENGINEERING IN ACTION ========================= */}
+      <section className="border-y border-body/5 bg-surface-soft py-24 text-body lg:py-32">
+        <div className="mx-auto max-w-container px-6 lg:px-12">
+
+          <Reveal className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+
             <div>
               <SectionLabel>Engineering in action</SectionLabel>
-              <h2 className="type-h2 text-navy">
+
+              <h2 className="text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl lg:text-6xl">
                 From the bench
                 <br />
-                <span className="text-navy/40">to the field.</span>
+                <span className="text-body/40">to the field.</span>
               </h2>
             </div>
+
             <p className="max-w-sm text-sm leading-6 text-muted">
               Real hardware, built and flown by our own team — not renders.
             </p>
+
           </Reveal>
 
-          <div className="stage grid gap-4 md:grid-cols-2">
+          <div className="grid gap-5 md:grid-cols-2">
+
             {proofPoints.map((point, index) => (
-              <Reveal key={point.title} delay={index * 90} className="h-full">
-                <TiltCard
-                  maxTilt={4}
-                  className="group h-full overflow-hidden rounded-panel bg-navy-900 shadow-lift transition-shadow duration-500 ease-soft hover:shadow-float"
-                >
-                  <div className="relative min-h-96 sm:min-h-112">
-                    <Image
-                      src={point.image}
-                      alt={point.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 640px"
-                      loading="lazy"
-                      className="object-cover transition-transform duration-700 ease-soft group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-linear-to-t from-navy-950 via-navy-950/45 to-transparent" />
+              <Reveal
+                key={point.title}
+                delay={index * 90}
+                className="group relative min-h-110 overflow-hidden rounded-2xl bg-navy-900 text-white"
+              >
+                <ImageSlideshow
+                  images={point.images}
+                  intervalMs={point.intervalMs}
+                  className="absolute inset-0 h-full w-full"
+                  imageClassName="transition-transform duration-700 group-hover:scale-105"
+                />
 
-                    <span className="absolute left-6 top-6 text-[0.625rem] font-semibold uppercase tracking-[0.2em] text-white/70">
-                      {point.category}
-                    </span>
+                <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent" />
 
-                    <div className="absolute inset-x-6 bottom-6 sm:inset-x-8 sm:bottom-8">
-                      <h3 className="type-h3 text-white">{point.title}</h3>
-                      <p className="mt-2.5 max-w-md text-sm leading-6 text-white/75">
-                        {point.description}
-                      </p>
-                    </div>
-                  </div>
-                </TiltCard>
+                <span className="pointer-events-none absolute left-6 top-6 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/60">
+                  {point.category}
+                </span>
+
+                <div className="pointer-events-none absolute bottom-8 left-8 right-8">
+                  <h3 className="text-3xl font-semibold tracking-tight">
+                    {point.title}
+                  </h3>
+
+                  <p className="mt-3 max-w-md text-sm leading-6 text-white/55">
+                    {point.description}
+                  </p>
+                </div>
               </Reveal>
             ))}
+
           </div>
         </div>
-      </Surface>
+      </section>
 
-      {/* ==================== 8. ABOUT TEASER ==================== */}
-      <Surface variant="white" className="section-tight">
-        <div className="shell">
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,0.6fr)_minmax(0,1.4fr)] lg:gap-16">
+      {/* ========================= TECHNOLOGY STATEMENT ========================= */}
+      <section className="relative overflow-hidden bg-navy-950 py-32 lg:py-44">
+
+        <div className="absolute left-1/2 top-1/2 h-125 w-125 -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange/10 blur-[140px]" />
+
+        <Reveal className="relative mx-auto max-w-300 px-6 text-center">
+
+          <Sparkles
+            className="mx-auto mb-8 text-orange"
+            size={25}
+            strokeWidth={1.3}
+          />
+
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-white/35">
+            The SafeSky Nexus approach
+          </p>
+
+          <h2 className="mx-auto mt-7 max-w-5xl text-4xl font-medium leading-[1.05] tracking-[-0.04em] sm:text-5xl lg:text-7xl">
+            Hardware is only the beginning.
+
+            <span className="block text-white/35">
+              Intelligence is what moves it forward.
+            </span>
+          </h2>
+
+        </Reveal>
+      </section>
+
+      {/* ========================= ABOUT ========================= */}
+      <section className="bg-white py-24 text-body lg:py-32">
+        <div className="mx-auto max-w-container px-6 lg:px-12">
+
+          <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
+
             <Reveal>
               <SectionLabel>About SafeSky Nexus</SectionLabel>
+
+              <p className="text-xs uppercase tracking-[0.18em] text-muted/70">
+                Aerospace technology
+              </p>
             </Reveal>
+
             <Reveal delay={90}>
-              <h2 className="type-h2 max-w-3xl text-navy">
+
+              <h2 className="max-w-4xl text-3xl font-semibold leading-[1.1] tracking-[-0.035em] sm:text-4xl lg:text-5xl">
                 Building the next generation of autonomous systems.
               </h2>
-              <p className="type-body mt-6 text-muted">
-                SafeSky Nexus engineers autonomous aerial and intelligent
-                systems, bringing together software, electronics, navigation,
-                perception, and mission technologies.
+
+              <p className="mt-7 max-w-2xl text-base leading-7 text-muted">
+                SafeSky Nexus focuses on the engineering of autonomous aerial
+                and intelligent systems, bringing together software,
+                electronics, navigation, perception, and mission technologies.
               </p>
-              <TextLink href={routes.about} className="mt-5">
-                Read our story
-              </TextLink>
+
+              <Link
+                href="/about"
+                className="group mt-8 inline-flex items-center gap-3 text-sm font-semibold"
+              >
+                Discover SafeSky Nexus
+
+                <ArrowRight
+                  size={17}
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                />
+              </Link>
+
             </Reveal>
           </div>
         </div>
-      </Surface>
+      </section>
 
-      {/* ==================== 9. CLOSING STATEMENT + CTA ====================
-          The original page ended with two near-identical dark sections: a
-          philosophy statement and then a CTA repeating the same visual
-          treatment. They are merged into one closing moment, so the page has
-          a single, unmissable end point. */}
-      <Surface variant="navy" className="section-lead relative overflow-hidden">
+      {/* ========================= FINAL CTA ========================= */}
+      <section className="relative overflow-hidden bg-navy py-28 lg:py-40">
+
         <div
-          aria-hidden="true"
-          className="grid-texture grid-texture-dark absolute inset-0"
-        />
-        <div
-          aria-hidden="true"
-          className="glow-orange pointer-events-none absolute left-1/2 top-1/2 h-136 w-136 max-w-none -translate-x-1/2 -translate-y-1/2 rounded-full blur-[120px]"
+          className="absolute inset-0 opacity-[0.06]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+            backgroundSize: "70px 70px",
+          }}
         />
 
-        <div className="shell relative text-center">
-          <Reveal>
-            <h2 className="type-h1 mx-auto max-w-[18ch]">
-              Hardware is only the beginning.
-              <span className="mt-2 block text-white/40">
-                Intelligence is what moves it forward.
-              </span>
-            </h2>
-          </Reveal>
+        <Reveal className="relative mx-auto max-w-275 px-6 text-center">
 
-          <Reveal delay={120}>
-            <p className="type-lede mx-auto mt-8 text-white/70">
-              Tell us what you are trying to build, operate, or solve — and
-              we&apos;ll show you what autonomous technology can do for you.
-            </p>
+          <div className="mx-auto mb-7 flex h-12 w-12 items-center justify-center rounded-full border border-white/10">
+            <Zap
+              size={19}
+              className="text-orange"
+              strokeWidth={1.5}
+            />
+          </div>
 
-            <div className="mt-9 flex flex-wrap justify-center gap-3 sm:gap-4">
-              <PrimaryButton href={routes.contact}>
-                Start a conversation
-              </PrimaryButton>
-              <SecondaryButton href={explorePath}>
-                Explore our systems
-              </SecondaryButton>
-            </div>
-          </Reveal>
-        </div>
-      </Surface>
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-white/35">
+            Start a conversation
+          </p>
+
+          <h2 className="mx-auto mt-6 max-w-4xl text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl lg:text-7xl">
+            Have a mission in mind?
+          </h2>
+
+          <p className="mx-auto mt-6 max-w-xl text-base leading-7 text-white/45">
+            Tell us what you are trying to build, operate, or solve. Let&apos;s
+            explore what autonomous technology can do for you.
+          </p>
+
+          <div className="mt-10 flex flex-wrap justify-center gap-4">
+
+            <PrimaryButton href="/contact">
+              Contact SafeSky Nexus
+            </PrimaryButton>
+
+            <SecondaryButton href="/products">
+              Explore our systems
+            </SecondaryButton>
+
+          </div>
+
+        </Reveal>
+      </section>
+
     </main>
   );
 }

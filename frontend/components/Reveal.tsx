@@ -1,38 +1,32 @@
 "use client";
 
-import {
-  useEffect,
-  useRef,
-  useState,
-  type ElementType,
-  type ReactNode,
-} from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 type RevealProps = {
   children: ReactNode;
-  /** Stagger in ms. Keep siblings to 0 / 90 / 180 — beyond ~250ms it drags. */
-  delay?: number;
+  /** Extra classes for layout — merged onto the wrapper div. */
   className?: string;
-  /** Render as a semantic element instead of a div where appropriate. */
-  as?: ElementType;
+  /** Stagger this reveal after others, in ms. */
+  delay?: number;
+  /** Starting vertical offset in px (how far it slides up from). */
+  y?: number;
 };
 
 /**
- * Scroll-entrance wrapper.
+ * Fades an element in and slides it up slightly the first time it enters
+ * the viewport. Triggers once — it does not replay on repeated scrolling.
  *
- * Unchanged in spirit from the original; three fixes:
- *  • Observes with a negative bottom rootMargin so the reveal fires slightly
- *    before the element is fully in view — it no longer "pops" on fast scrolls.
- *  • Falls back to visible if IntersectionObserver is missing, so content can
- *    never end up permanently at opacity-0.
- *  • Only the transform/opacity transition is declared, so it doesn't fight
- *    colour or shadow transitions on child elements.
+ * Reduced motion: this only ever animates `opacity` and `transform` via a
+ * CSS `transition`, and globals.css already forces every
+ * `transition-duration` to 0.01ms under `prefers-reduced-motion: reduce`.
+ * So content still appears (once observed), it just does so instantly,
+ * with no motion — nothing extra to wire up here.
  */
 export default function Reveal({
   children,
-  delay = 0,
   className = "",
-  as: Tag = "div",
+  delay = 0,
+  y = 24,
 }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -41,23 +35,14 @@ export default function Reveal({
     const node = ref.current;
     if (!node) return;
 
-    const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    if (prefersReduced || typeof IntersectionObserver === "undefined") {
-      setVisible(true);
-      return;
-    }
-
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setVisible(true);
-          observer.disconnect();
+          observer.unobserve(node);
         }
       },
-      { threshold: 0.1, rootMargin: "0px 0px -8% 0px" }
+      { threshold: 0.15, rootMargin: "0px 0px -10% 0px" }
     );
 
     observer.observe(node);
@@ -65,14 +50,17 @@ export default function Reveal({
   }, []);
 
   return (
-    <Tag
+    <div
       ref={ref}
-      style={{ transitionDelay: visible ? `${delay}ms` : "0ms" }}
-      className={`transition-[opacity,transform] duration-700 ease-soft ${
-        visible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
-      } ${className}`}
+      className={`transition-[opacity,transform] duration-700 ease-out ${className}`}
+      style={{
+        transitionDelay: `${delay}ms`,
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translate3d(0,0,0)" : `translate3d(0, ${y}px, 0)`,
+        willChange: "opacity, transform",
+      }}
     >
       {children}
-    </Tag>
+    </div>
   );
 }
