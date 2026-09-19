@@ -306,18 +306,14 @@ export default function Home() {
                 card would very likely cut those captions off, along with
                 a large part of the drone itself. This layer is purely
                 decorative backdrop, so it's hidden from screen readers. */}
-            <video
+            <Image
+              src="/images/drone-hero.png"
+              alt=""
               aria-hidden="true"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              poster="/images/drone-hero.png"
-              className="absolute inset-0 h-full w-full scale-110 object-cover object-center blur-2xl brightness-[0.55] transition-transform duration-1200 ease-out group-hover:scale-[1.18]"
-            >
-              <source src="/videos/featured-platform.mp4" type="video/mp4" />
-            </video>
+              fill
+              sizes="100vw"
+              className="scale-110 object-cover object-center blur-2xl brightness-[0.55] transition-transform duration-1200 ease-out group-hover:scale-[1.18]"
+            />
 
             {/* The actual video, shown complete and uncropped — every
                 caption and the full drone stay visible regardless of the
@@ -327,7 +323,7 @@ export default function Home() {
               muted
               loop
               playsInline
-              preload="auto"
+              preload="metadata"
               poster="/images/drone-hero.png"
               aria-label="SafeSky Nexus autonomous aerial platform being assembled and readied for flight"
               className="absolute inset-0 h-full w-full object-contain object-center"
@@ -456,7 +452,7 @@ export default function Home() {
             <Reveal delay={0} className="group relative min-h-110 overflow-hidden rounded-2xl bg-navy text-white">
 
               <Image
-                src="/images/defense-drone.png"
+                src="/images/drone-autonomous-aerial.png"
                 alt="Autonomous systems for demanding missions"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -487,7 +483,7 @@ export default function Home() {
             <Reveal delay={90} className="group relative min-h-110 overflow-hidden rounded-2xl bg-navy text-white">
 
               <Image
-                src="/images/industrial-drone.png"
+                src="/images/drone-mission-control.png"
                 alt="Autonomous systems for industrial applications"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"

@@ -8,7 +8,7 @@ export default function DefenseHero() {
       {/* Background */}
       <div className="absolute inset-0">
         <Image
-          src="/images/defense-drone.png"
+          src="/images/drone-autonomous-aerial.png"
           alt="SafeSky Nexus autonomous defense platform"
           fill
           priority
