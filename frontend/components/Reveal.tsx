@@ -1,15 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ElementType, type ReactNode } from "react";
 
 type RevealProps = {
   children: ReactNode;
-  /** Extra classes for layout — merged onto the wrapper div. */
+  /** Extra classes for layout — merged onto the wrapper element. */
   className?: string;
   /** Stagger this reveal after others, in ms. */
   delay?: number;
   /** Starting vertical offset in px (how far it slides up from). */
   y?: number;
+  /** Element/tag to render as (e.g. "li" when used inside a <ul>). Defaults to "div". */
+  as?: ElementType;
 };
 
 /**
@@ -27,8 +29,9 @@ export default function Reveal({
   className = "",
   delay = 0,
   y = 24,
+  as: Tag = "div",
 }: RevealProps) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -50,7 +53,7 @@ export default function Reveal({
   }, []);
 
   return (
-    <div
+    <Tag
       ref={ref}
       className={`transition-[opacity,transform] duration-700 ease-out ${className}`}
       style={{
@@ -61,6 +64,6 @@ export default function Reveal({
       }}
     >
       {children}
-    </div>
+    </Tag>
   );
 }
