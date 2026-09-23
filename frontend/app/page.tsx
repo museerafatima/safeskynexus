@@ -299,37 +299,13 @@ export default function Home() {
 
           <Reveal delay={90} className="group relative min-h-140 overflow-hidden rounded-2xl bg-black">
 
-            {/* Blurred, scaled-up copy of the same clip fills the frame edge
-                to edge. Needed because the source clip is portrait
-                (720x1280) with captions burned into the footage ("SafeSky
-                Nexus", the site URL) — a plain object-cover crop on a wide
-                card would very likely cut those captions off, along with
-                a large part of the drone itself. This layer is purely
-                decorative backdrop, so it's hidden from screen readers. */}
             <Image
-              src="/images/drone-hero.png"
-              alt=""
-              aria-hidden="true"
+              src="/images/featured-platform.jpg"
+              alt="SafeSky Nexus autonomous aerial platform, front view showing its onboard camera, compute module, and motor assembly"
               fill
-              sizes="100vw"
-              className="scale-110 object-cover object-center blur-2xl brightness-[0.55] transition-transform duration-1200 ease-out group-hover:scale-[1.18]"
+              sizes="(max-width: 1440px) 100vw, 1440px"
+              className="object-cover object-center transition-transform duration-1200 ease-out group-hover:scale-[1.04]"
             />
-
-            {/* The actual video, shown complete and uncropped — every
-                caption and the full drone stay visible regardless of the
-                card's width. */}
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              poster="/images/drone-hero.png"
-              aria-label="SafeSky Nexus autonomous aerial platform being assembled and readied for flight"
-              className="absolute inset-0 h-full w-full object-contain object-center"
-            >
-              <source src="/videos/featured-platform.mp4" type="video/mp4" />
-            </video>
 
             <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black via-black/25 to-transparent" />
 
@@ -381,7 +357,7 @@ export default function Home() {
       <section className="bg-white py-24 text-body lg:py-32">
         <div className="mx-auto max-w-container px-6 lg:px-12">
 
-          <div className="grid gap-14 lg:grid-cols-[0.65fr_1.35fr]">
+          <div className="grid gap-14 lg:grid-cols-[0.65fr_1.35fr] lg:items-start">
 
             <Reveal>
               <SectionLabel>Core capabilities</SectionLabel>
@@ -605,17 +581,17 @@ export default function Home() {
       <section className="bg-white py-24 text-body lg:py-32">
         <div className="mx-auto max-w-container px-6 lg:px-12">
 
-          <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
+          <Reveal className="mb-12 lg:mb-16">
+            <SectionLabel>About SafeSky Nexus</SectionLabel>
+
+            <p className="text-xs uppercase tracking-[0.18em] text-muted/70">
+              Aerospace technology
+            </p>
+          </Reveal>
+
+          <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16">
 
             <Reveal>
-              <SectionLabel>About SafeSky Nexus</SectionLabel>
-
-              <p className="text-xs uppercase tracking-[0.18em] text-muted/70">
-                Aerospace technology
-              </p>
-            </Reveal>
-
-            <Reveal delay={90}>
 
               <h2 className="max-w-4xl text-3xl font-semibold leading-[1.1] tracking-[-0.035em] sm:text-4xl lg:text-5xl">
                 Building the next generation of autonomous systems.
@@ -640,6 +616,34 @@ export default function Home() {
               </Link>
 
             </Reveal>
+
+            {/* Same card treatment used throughout the page (rounded
+                corners, border, bottom fade, pill tag with the brand dot),
+                sitting as an equal-weight partner to the text rather than
+                squeezed into a narrow label rail. Landscape crop biased
+                toward the lower-middle of the frame, since the source
+                photo is square and the actual subject — hands, soldering
+                iron, motors, wiring — sits below the two heads. */}
+            <Reveal delay={90} className="group relative aspect-16/10 overflow-hidden rounded-2xl border border-body/10 bg-navy">
+              <Image
+                src="/images/about-team-build.jpg"
+                alt="SafeSky Nexus engineers soldering motor connections during assembly"
+                fill
+                sizes="(max-width: 1024px) 100vw, 45vw"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                style={{ objectPosition: "center 62%" }}
+              />
+
+              <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-navy-950 via-navy-950/10 to-transparent" />
+
+              <div className="absolute left-4 top-4 inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-black/30 px-3 py-1.5 backdrop-blur-md">
+                <span className="h-1.5 w-1.5 rounded-full bg-orange" />
+                <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-white/70">
+                  In the workshop
+                </span>
+              </div>
+            </Reveal>
+
           </div>
         </div>
       </section>

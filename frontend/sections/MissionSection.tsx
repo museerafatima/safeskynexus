@@ -7,8 +7,8 @@ const missionPoints = [
   "Indigenous aerospace innovation",
   "GPS-free autonomous navigation",
   "AI and computer vision",
-  "Secure, jamming-resistant systems",
-  "Affordable high-performance solutions",
+  "Jamming-resistant security",
+  "High-performance, affordable systems",
 ];
 
 export default function MissionSection() {
@@ -34,11 +34,9 @@ export default function MissionSection() {
             <SectionLabel>Mission</SectionLabel>
             <h2 className="type-h2 text-navy">Our mission</h2>
             <p className="type-body mt-5 text-muted">
-              To empower defense forces and critical civilian sectors through
-              intelligent autonomous aerial systems designed for reliability,
-              security and operational excellence. We build fully indigenous
-              drone technologies that remove dependence on foreign navigation
-              systems.
+              We build intelligent autonomous aerial systems for defense and
+              critical civilian sectors &mdash; reliable, secure, and fully
+              indigenous, with no dependence on foreign navigation.
             </p>
 
             <ul className="mt-7 space-y-3">

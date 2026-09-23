@@ -50,20 +50,19 @@ export default function FoundersMessageSection() {
           <Reveal delay={110}>
             <blockquote className="space-y-4">
               <p className="type-body text-white/80">
-                Akash Afraz is the Founder and CEO of SSN, where he leads the
+                Akash Afraz is the Founder and CEO of SSN, leading
                 development of Pakistan&rsquo;s first indigenous GPS-free
                 autonomous drone navigation and AI targeting system. An AI
-                engineer by training, Akash holds a degree in artificial
-                intelligence, combining deep technical expertise with
-                founder-level execution to build sovereign, defense-grade
+                engineer by training, he brings deep technical expertise and
+                founder-level execution to building sovereign, defense-grade
                 autonomous systems from the ground up.
               </p>
               <p className="type-body text-white/80">
-                His vision is to build a complete indigenous aerial autonomy
-                ecosystem &mdash; one that closes the critical gap in
-                GPS-denied navigation and intelligent targeting for
-                Pakistan&rsquo;s defense sector, delivering full-stack,
-                ITAR-free solutions that reduce dependence on foreign systems.
+                His goal is a complete indigenous aerial autonomy ecosystem
+                &mdash; closing the gap in GPS-denied navigation and
+                intelligent targeting for Pakistan&rsquo;s defense sector,
+                with full-stack, ITAR-free solutions that reduce dependence
+                on foreign systems.
               </p>
             </blockquote>
           </Reveal>

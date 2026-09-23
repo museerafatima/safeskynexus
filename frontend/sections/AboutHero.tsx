@@ -34,14 +34,12 @@ export default function AboutHero() {
             </h1>
 
             <p className="type-body mt-7 text-white/75">
-              SafeSky Nexus Private Limited &mdash; SSN is a Pakistan-based
-              aerospace defense technology company dedicated to building the
-              next generation of fully indigenous autonomous drone systems.
-              Incorporated under the Securities and Exchange Commission of
-              Pakistan (SECP) and incubated at the National Incubation Center
-              for Aerospace Technologies (NICAT), NASTP Rawalpindi, our company
-              was selected from thousands of applicants through a highly
-              competitive nationwide program.
+              SafeSky Nexus Private Limited (SSN) is a Pakistan-based
+              aerospace defense technology company building the next
+              generation of fully indigenous autonomous drone systems.
+              Incorporated under the SECP and incubated at NICAT, NASTP
+              Rawalpindi, the company was selected from thousands of
+              applicants through a competitive nationwide program.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3 sm:gap-4">

@@ -30,15 +30,10 @@ export default function VisionSection() {
             <h2 className="type-h2 text-navy">Our vision</h2>
             <p className="type-body mt-5 text-muted">
               To become Pakistan&apos;s leading aerospace defense technology
-              company, pioneering autonomous systems that redefine modern
-              warfare and intelligent aerial operations through indigenous
-              innovation.
-            </p>
-            <p className="type-body mt-4 text-muted">
-              We envision a future where advanced AI-powered drone technologies
-              strengthen national security, support critical industries, and
-              position Pakistan among global leaders in autonomous defense
-              systems.
+              company &mdash; pioneering autonomous systems, built through
+              indigenous innovation, that strengthen national security,
+              support critical industries, and position Pakistan among
+              global leaders in autonomous defense.
             </p>
           </Reveal>
         </div>

@@ -25,22 +25,17 @@ export default function HistorySection() {
             <SectionLabel>History</SectionLabel>
             <h2 className="type-h2 text-navy">Our history</h2>
             <p className="type-body mt-5 text-muted">
-              Founded with the vision of strengthening Pakistan&apos;s
-              technological independence, SSN emerged to solve one of modern
-              warfare&apos;s greatest challenges: reliable autonomous
-              navigation in anti-spoofing environments.
-            </p>
-            <p className="type-body mt-4 text-muted">
-              Recognising the growing need for secure, indigenous defense
-              technologies, our team focused on developing AI-powered computer
-              vision systems capable of autonomous flight without relying on
+              Founded to strengthen Pakistan&apos;s technological
+              independence, SSN set out to solve a persistent problem in
+              modern warfare: reliable autonomous navigation in
+              anti-spoofing environments &mdash; building AI-powered
+              computer vision systems capable of autonomous flight without
               satellite navigation or external communication signals.
             </p>
             <p className="type-body mt-4 text-muted">
-              Today SSN continues to push the boundaries of aerospace
-              innovation, designing intelligent aerial systems that are
+              Today, SSN designs intelligent aerial systems that are
               affordable, secure, resistant to electronic warfare, and
-              adaptable to both military and commercial applications.
+              adaptable across military and commercial use.
             </p>
           </Reveal>
         </div>
