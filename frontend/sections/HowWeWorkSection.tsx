@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
+import { Play } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import { SectionLabel } from "@/components/HomeUI";
 
@@ -25,16 +27,41 @@ export default function HowWeWorkSection() {
       </Reveal>
 
       <Reveal delay={150}>
-        <button
-          type="button"
-          aria-label={playing ? "Playing video" : "Play video"}
-          onClick={() => setPlaying(true)}
-          className="group w-full max-w-4xl mx-auto h-48 sm:h-64 md:h-80 lg:h-96 bg-navy/5 rounded-xl sm:rounded-2xl flex items-center justify-center transition-all duration-300 hover:bg-navy/10 hover:scale-[1.01] active:scale-[0.99]"
-        >
-          <span className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full bg-navy transition-all duration-300 group-hover:bg-orange group-hover:scale-110">
-            <span className="w-0 h-0 border-t-10 sm:border-t-12 border-t-transparent border-b-10 sm:border-b-12 border-b-transparent border-l-16 sm:border-l-20 border-l-white ml-1.5 sm:ml-2" />
-          </span>
-        </button>
+        <div className="relative w-full max-w-4xl mx-auto aspect-video rounded-xl sm:rounded-2xl overflow-hidden bg-navy-950">
+          {playing ? (
+            <video
+              controls
+              autoPlay
+              playsInline
+              preload="metadata"
+              poster="/images/how-we-work-poster.jpg"
+              className="absolute inset-0 h-full w-full object-contain bg-black"
+            >
+              <source src="/videos/how-we-work.mp4" type="video/mp4" />
+            </video>
+          ) : (
+            <button
+              type="button"
+              aria-label="Play video"
+              onClick={() => setPlaying(true)}
+              className="group absolute inset-0 h-full w-full"
+            >
+              <Image
+                src="/images/how-we-work-poster.jpg"
+                alt="SafeSky Nexus engineers assembling and testing a drone platform"
+                fill
+                sizes="(max-width: 1024px) 100vw, 896px"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+
+              <span className="absolute inset-0 bg-navy-950/30 transition-colors duration-300 group-hover:bg-navy-950/20" />
+
+              <span className="absolute left-1/2 top-1/2 flex h-16 w-16 sm:h-20 sm:w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-orange text-white shadow-lg transition-transform duration-300 group-hover:scale-110">
+                <Play size={26} className="ml-1" fill="currentColor" aria-hidden="true" />
+              </span>
+            </button>
+          )}
+        </div>
       </Reveal>
     </section>
   );
