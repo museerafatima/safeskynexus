@@ -19,6 +19,11 @@ import { primaryNav, routes, site } from "@/lib/site";
    • Drawer closes on Escape and on route change, locks background scroll,
      and animates on grid-rows rather than a guessed max-h-96 (which would
      have clipped the menu if a link were ever added).
+   • Logo now pairs the icon with the company wordmark — the icon alone
+     read as empty/unbranded next to the full-word nav links beside it.
+     The icon's alt text moved to "" (decorative) since the adjacent text
+     now carries the accessible name for screen readers, avoiding it being
+     announced twice.
    ========================================================================== */
 
 export default function Navbar() {
@@ -60,16 +65,19 @@ export default function Navbar() {
         <Link
           href={routes.home}
           aria-label={`${site.name} — home`}
-          className="flex shrink-0 items-center rounded-md transition-opacity duration-200 hover:opacity-80"
+          className="flex shrink-0 items-center gap-2 rounded-md transition-opacity duration-200 hover:opacity-80"
         >
           <Image
             src="/images/logo-icon.png"
-            alt="SafeSky Nexus"
+            alt=""
             width={96}
             height={42}
             priority
-            className="h-8 w-auto sm:h-9"
+            className="h-9 w-auto shrink-0 sm:h-10"
           />
+          <span className="translate-y-px text-base font-semibold leading-none tracking-tight text-navy sm:translate-y-0.5 sm:text-lg">
+            {site.name}
+          </span>
         </Link>
 
         {/* ---- Desktop navigation ---- */}
