@@ -64,11 +64,13 @@ export const aboutAnchors = [
 ] as const;
 
 /**
- * Social profiles.
- * TODO: replace the placeholder `#` values with the real profile URLs.
- * Any entry left as "#" is rendered as plain text rather than a dead link.
+ * Social profiles shown in the footer's Follow section.
+ * The Gmail icon is added separately in Footer.tsx from `contact.email`.
  */
 export const socials = [
-  { label: "Instagram", href: "#" },
-  { label: "LinkedIn", href: "#" },
+  { label: "Instagram", href: "https://www.instagram.com/safeskynexus/" },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/safesky-nexus-private-limited/",
+  },
 ] as const;

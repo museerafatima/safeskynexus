@@ -2,92 +2,57 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import HeroBackgroundVideo from "@/components/HeroBackgroundVideo";
+import SectionBackgroundVideo from "@/components/SectionBackgroundVideo";
 import ImageSlideshow from "@/components/ImageSlideshow";
 import Reveal from "@/components/Reveal";
+import CapabilityExplorer from "@/components/CapabilityExplorer";
+import { routes } from "@/lib/site";
 import {
   ArrowDown,
   ArrowRight,
   ArrowUpRight,
-  Eye,
-  Layers3,
-  Navigation,
-  Radar,
   Shield,
   Sparkles,
   Target,
   Zap,
 } from "lucide-react";
 
-const capabilities = [
-  {
-    number: "01",
-    icon: Eye,
-    title: "Perception",
-    description:
-      "Real-time environmental awareness that enables autonomous systems to understand their surroundings.",
-  },
-  {
-    number: "02",
-    icon: Navigation,
-    title: "Navigation",
-    description:
-      "Intelligent navigation technologies designed for reliable autonomous movement and mission execution.",
-  },
-  {
-    number: "03",
-    icon: Layers3,
-    title: "Autonomy",
-    description:
-      "Integrated software and hardware systems that allow platforms to make decisions with reduced operator dependency.",
-  },
-  {
-    number: "04",
-    icon: Radar,
-    title: "Mission Intelligence",
-    description:
-      "Technology focused on turning platform data into actionable information during operations.",
-  },
-];
+/* Where the "technology" buttons lead. There is no /products page yet, so
+   they point to the Defense page. When a products page exists, change this
+   one line (for example to routes.products) and every button follows. */
+const technologyHref = routes.defense;
 
-/* Real photographs — bench build and live media coverage.
-   `images` accepts one entry (static) or several (auto-crossfading).
-   `intervalMs` sets how long each card lingers on an image before
-   crossfading to the next. Drop new files into /public/images/ and add
-   their paths to the array — nothing else needs to change. */
-const proofPoints = [
-  {
-    images: [
-      { src: "/images/rd-lab-build-1.jpg", alt: "SafeSky Nexus team soldering motor connections on the bench" },
-      { src: "/images/rd-lab-build-2.jpg", alt: "SafeSky Nexus engineers assembling an airframe together" },
-      { src: "/images/rd-lab-build-3.jpg", alt: "SafeSky Nexus autonomous platform on the bench with flight-planning software" },
-    ],
-    intervalMs: 3000,
-    category: "ENGINEERING",
-    title: "Built in-house, tested in-house",
-    description:
-      "Every airframe starts on our own bench — designed, wired, and flown by the team before it reaches the field.",
-  },
-  {
-    images: [
-      { src: "/images/media-feature.jpg", alt: "SafeSky Nexus presenting to ARY News at NUTECH" },
-      { src: "/images/media-feature-2.jpg", alt: "SafeSky Nexus discussed on Suno News, covering the platform's commercial launch" },
-      { src: "/images/media-feature-3.jpg", alt: "SafeSky Nexus founder speaking with BOL News at a technology expo" },
-      { src: "/images/media-feature-4.jpg", alt: "SafeSky Nexus featured on GTV News discussing autonomous aerial technology" },
-    ],
-    intervalMs: 3000,
-    category: "MEDIA & PRESS",
-    title: "SafeSky Nexus, in the media",
-    description:
-      "From broadcast interviews to industry events, our founder shares the vision behind SafeSky Nexus with audiences across Pakistan.",
-  },
-];
+/* Real photographs — bench build and live media coverage, shown together
+   in ONE card as a single auto-crossfading slideshow. `intervalMs` sets how
+   long the card lingers on each image. Drop new files into /public/images/
+   and add their paths to the array — nothing else needs to change. */
+const showcase = {
+  intervalMs: 3500,
+  tag: "Engineering & Media",
+  images: [
+    { src: "/images/rd-lab-build-1.jpg", alt: "SafeSky Nexus team soldering motor connections on the bench" },
+    { src: "/images/rd-lab-build-2.jpg", alt: "SafeSky Nexus engineers assembling an airframe together" },
+    { src: "/images/rd-lab-build-3.jpg", alt: "SafeSky Nexus autonomous platform on the bench with flight-planning software" },
+    { src: "/images/media-feature.jpg", alt: "SafeSky Nexus presenting to ARY News at NUTECH" },
+    { src: "/images/media-feature-2.jpg", alt: "SafeSky Nexus discussed on Suno News, covering the platform's commercial launch" },
+    { src: "/images/media-feature-4.jpg", alt: "SafeSky Nexus featured on GTV News discussing autonomous aerial technology" },
+  ],
+  title: "Built in-house. Tested in the field. Shared across Pakistan.",
+  description:
+    "Every airframe is designed, wired and flown by our own team before it reaches the field, and our founder carries that work to broadcast interviews and industry events across the country.",
+};
+
+/* Shared classes so every interactive element gets a visible keyboard focus
+   ring and respects reduced-motion preferences. */
+const focusRing =
+  "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange";
 
 function SectionLabel({ children }: { children: ReactNode }) {
   return (
-    <div className="mb-5 flex items-center gap-3">
-      <span className="h-px w-8 bg-orange" />
+    <div className="mb-4 flex items-center gap-3 sm:mb-5">
+      <span className="h-px w-6 shrink-0 bg-orange sm:w-8" />
 
-      <span className="text-xs font-semibold uppercase tracking-[0.2em] text-orange">
+      <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-orange sm:text-xs">
         {children}
       </span>
     </div>
@@ -104,13 +69,13 @@ function PrimaryButton({
   return (
     <Link
       href={href}
-      className="group inline-flex items-center gap-3 rounded-full bg-orange px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:brightness-110"
+      className={`group inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-full bg-orange px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:brightness-110 motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:w-auto ${focusRing}`}
     >
       {children}
 
       <ArrowUpRight
         size={17}
-        className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+        className="shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none"
       />
     </Link>
   );
@@ -126,13 +91,13 @@ function SecondaryButton({
   return (
     <Link
       href={href}
-      className="group inline-flex items-center gap-3 rounded-full border border-white/20 px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:border-white/40 hover:bg-white/5"
+      className={`group inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-full border border-white/20 px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:border-white/40 hover:bg-white/5 motion-reduce:transition-none sm:w-auto ${focusRing}`}
     >
       {children}
 
       <ArrowRight
         size={17}
-        className="transition-transform duration-300 group-hover:translate-x-1"
+        className="shrink-0 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none"
       />
     </Link>
   );
@@ -140,18 +105,21 @@ function SecondaryButton({
 
 export default function Home() {
   return (
-    <main className="overflow-hidden bg-navy-950 text-white">
+    /* overflow-x-clip (not overflow-hidden) stops sideways scroll without
+       creating a scroll container that would break sticky headers. */
+    <main className="overflow-x-clip bg-navy-950 text-white">
 
       {/* ========================= HERO ========================= */}
-      <section className="relative min-h-[calc(100vh-80px)] overflow-hidden">
+      <section className="relative min-h-[calc(100svh-80px)] overflow-hidden">
 
         {/* Background */}
         <div className="absolute inset-0 overflow-hidden bg-navy-950">
           <HeroBackgroundVideo />
 
-          <div className="absolute inset-0 bg-black/45" />
+          <div className="absolute inset-0 bg-black/55 sm:bg-black/45" />
 
-          <div className="absolute inset-0 bg-linear-to-r from-black via-black/55 to-transparent" />
+          {/* Stronger scrim on small screens where text spans full width */}
+          <div className="absolute inset-0 bg-linear-to-r from-black via-black/70 to-black/30 sm:via-black/55 sm:to-transparent" />
 
           <div className="absolute inset-0 bg-linear-to-t from-navy-950 via-transparent to-black/10" />
         </div>
@@ -162,35 +130,35 @@ export default function Home() {
           style={{
             backgroundImage:
               "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-            backgroundSize: "80px 80px",
+            backgroundSize: "56px 56px",
           }}
         />
 
-        <div className="relative mx-auto flex min-h-[calc(100vh-80px)] max-w-container items-end px-6 pb-20 pt-28 lg:px-12 lg:pb-24">
-          <Reveal className="max-w-4xl">
+        <div className="relative mx-auto flex min-h-[calc(100svh-80px)] max-w-container items-end px-5 pb-16 pt-28 sm:px-6 sm:pb-20 lg:px-12 lg:pb-28">
+          <Reveal className="w-full max-w-4xl">
 
-            <div className="mb-8 flex items-center gap-3">
-              <span className="h-2 w-2 rounded-full bg-orange shadow-[0_0_14px_rgba(230,117,20,0.8)]" />
+            <div className="mb-6 flex items-center gap-3 sm:mb-8">
+              <span className="h-2 w-2 shrink-0 rounded-full bg-orange shadow-[0_0_14px_rgba(230,117,20,0.8)]" />
 
-              <span className="text-xs font-medium uppercase tracking-[0.25em] text-white/70">
+              <span className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/75 sm:text-xs sm:tracking-[0.25em]">
                 Autonomous Aerospace Technology
               </span>
             </div>
 
-            <h1 className="max-w-5xl text-5xl font-semibold leading-[0.95] tracking-[-0.045em] sm:text-6xl md:text-7xl lg:text-[7.2rem]">
+            <h1 className="max-w-5xl text-[2.6rem] font-semibold leading-[0.98] tracking-[-0.04em] min-[400px]:text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7.2rem] xl:leading-[0.95]">
               Intelligence
               <br />
               <span className="text-white/55">in motion.</span>
             </h1>
 
-            <p className="mt-8 max-w-xl text-base leading-7 text-white/65 sm:text-lg">
+            <p className="mt-6 max-w-xl text-base leading-7 text-white/75 sm:mt-8 sm:text-lg">
               SafeSky Nexus develops autonomous aerial and intelligent
               systems built to perceive, navigate, and operate in demanding
               environments.
             </p>
 
-            <div className="mt-10 flex flex-wrap gap-4">
-              <PrimaryButton href="/products">
+            <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:gap-4">
+              <PrimaryButton href={technologyHref}>
                 Explore technology
               </PrimaryButton>
 
@@ -201,115 +169,113 @@ export default function Home() {
           </Reveal>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 right-6 hidden items-center gap-4 text-xs text-white/45 lg:flex">
-          <span>SCROLL TO EXPLORE</span>
-          <ArrowDown size={15} className="animate-bounce" />
-        </div>
+        {/* Scroll indicator + tag — inside the container so they align with
+            the content on ultra-wide screens */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-8 hidden lg:block">
+          <div className="mx-auto flex max-w-container items-center justify-between px-12">
+            <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/40">
+              SSN / 01
+            </div>
 
-        <div className="absolute bottom-8 left-6 hidden text-[10px] font-mono uppercase tracking-[0.2em] text-white/30 lg:block">
-          SSN / 01
-        </div>
-      </section>
-
-      {/* ========================= INTRO ========================= */}
-      <section className="relative bg-navy-950 py-28 lg:py-40">
-        <div className="mx-auto max-w-container px-6 lg:px-12">
-
-          <Reveal className="mb-12 lg:mb-16">
-            <SectionLabel>SafeSky Nexus</SectionLabel>
-
-            <p className="text-sm uppercase tracking-[0.18em] text-white/35">
-              Engineering autonomous systems
-            </p>
-          </Reveal>
-
-          <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16">
-
-            <Reveal delay={90}>
-              <h2 className="max-w-2xl text-3xl font-medium leading-[1.08] tracking-[-0.03em] text-white sm:text-4xl lg:text-6xl">
-                We create technology that gives autonomous platforms the
-                ability to{" "}
-                <span className="text-white/35">
-                  see, understand and move.
-                </span>
-              </h2>
-
-              <p className="mt-8 max-w-xl text-base leading-7 text-white/50">
-                From autonomous flight systems to intelligent navigation and
-                mission control, our work brings hardware and software
-                together into one connected technology ecosystem.
-              </p>
-            </Reveal>
-
-            {/* Exploded-assembly render — same card language used elsewhere
-                on the page (rounded corners, subtle border, bottom fade,
-                pill tag with the brand dot) so it reads as part of this
-                site rather than a dropped-in graphic. */}
-            <Reveal delay={160} className="group relative aspect-16/10 overflow-hidden rounded-2xl border border-white/10 bg-black">
-              <Image
-                src="/images/exploded-assembly.jpg"
-                alt="Exploded 3D render of a SafeSky Nexus drone frame, showing its motors, arms, and internal wiring separated for assembly"
-                fill
-                sizes="(max-width: 1024px) 100vw, 45vw"
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-              />
-
-              <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black via-black/10 to-transparent" />
-
-              <div className="absolute left-5 top-5 inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-black/30 px-4 py-2 backdrop-blur-md">
-                <span className="h-1.5 w-1.5 rounded-full bg-orange" />
-                <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-white/70">
-                  System architecture
-                </span>
-              </div>
-            </Reveal>
-
+            <div className="flex items-center gap-4 text-xs text-white/55">
+              <span>SCROLL TO EXPLORE</span>
+              <ArrowDown size={15} className="motion-safe:animate-bounce" />
+            </div>
           </div>
         </div>
       </section>
 
+      {/* ========================= INTRO ========================= */}
+      <section className="relative overflow-hidden bg-navy-950 py-20 sm:py-28 lg:py-40">
+
+        {/* Full-bleed background video — layered scrims keep text readable
+            on every screen size and blend into the sections above/below. */}
+        <div className="absolute inset-0">
+          <SectionBackgroundVideo
+            src="/videos/intro-platform.mp4"
+            poster="/images/intro-video-poster.jpg"
+          />
+
+          <div className="absolute inset-0 bg-navy-950/70 lg:bg-navy-950/55" />
+          <div className="absolute inset-0 bg-linear-to-r from-navy-950 via-navy-950/70 to-navy-950/40 lg:to-navy-950/20" />
+          <div className="absolute inset-0 bg-linear-to-t from-navy-950 via-transparent to-navy-950/40" />
+        </div>
+
+        <div className="relative mx-auto max-w-container px-5 sm:px-6 lg:px-12">
+
+          <Reveal className="mb-10 lg:mb-16">
+            <SectionLabel>SafeSky Nexus</SectionLabel>
+
+            <p className="text-xs uppercase tracking-[0.18em] text-white/50 sm:text-sm">
+              Engineering autonomous systems
+            </p>
+          </Reveal>
+
+          <Reveal delay={90}>
+            <h2 className="max-w-3xl text-balance text-3xl font-medium leading-[1.1] tracking-[-0.03em] text-white sm:text-4xl lg:text-6xl lg:leading-[1.08]">
+              We create technology that gives autonomous platforms the
+              ability to{" "}
+              <span className="text-white/45">
+                see, understand and move.
+              </span>
+            </h2>
+
+            <p className="mt-6 max-w-xl text-base leading-7 text-white/65 sm:mt-8">
+              From autonomous flight systems to intelligent navigation and
+              mission control, our work brings hardware and software
+              together into one connected technology ecosystem.
+            </p>
+          </Reveal>
+
+        </div>
+      </section>
+
       {/* ========================= FEATURED TECHNOLOGY ========================= */}
-      <section className="bg-navy py-20 lg:py-28">
-        <div className="mx-auto max-w-container px-6 lg:px-12">
+      <section className="bg-navy py-16 sm:py-20 lg:py-28">
+        <div className="mx-auto max-w-container px-5 sm:px-6 lg:px-12">
 
-          <Reveal className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <Reveal className="mb-10 flex flex-col justify-between gap-5 sm:flex-row sm:items-end lg:mb-12">
 
-            <div>
+            <div className="min-w-0">
               <SectionLabel>Featured Technology</SectionLabel>
 
-              <h2 className="text-4xl font-semibold tracking-[-0.035em] sm:text-5xl lg:text-6xl">
+              <h2 className="text-balance text-4xl font-semibold tracking-[-0.035em] sm:text-5xl lg:text-6xl">
                 Built for autonomy.
               </h2>
             </div>
 
             <Link
-              href="/products"
-              className="group flex items-center gap-2 text-sm font-semibold text-white/60 transition-colors hover:text-white"
+              href={technologyHref}
+              className={`group flex shrink-0 items-center gap-2 text-sm font-semibold text-white/70 transition-colors hover:text-white ${focusRing}`}
             >
               View all technology
 
               <ArrowRight
                 size={16}
-                className="transition-transform group-hover:translate-x-1"
+                className="transition-transform group-hover:translate-x-1 motion-reduce:transition-none"
               />
             </Link>
 
           </Reveal>
 
-          <Reveal delay={90} className="group relative min-h-140 overflow-hidden rounded-2xl bg-black">
+          {/* Card grows with its content (flex column) so text can never be
+              clipped on narrow screens; min-height keeps the cinematic ratio. */}
+          <Reveal
+            delay={90}
+            className="group relative flex min-h-120 flex-col justify-end overflow-hidden rounded-2xl bg-black sm:min-h-136 lg:min-h-140"
+          >
 
             <Image
               src="/images/featured-platform.jpg"
               alt="SafeSky Nexus autonomous aerial platform, front view showing its onboard camera, compute module, and motor assembly"
               fill
               sizes="(max-width: 1440px) 100vw, 1440px"
-              className="object-cover object-center transition-transform duration-1200 ease-out group-hover:scale-[1.04]"
+              className="object-cover object-center transition-transform duration-1200 ease-out group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
             />
 
-            <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black via-black/25 to-transparent" />
+            <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black via-black/50 to-transparent sm:via-black/25" />
 
-            <div className="absolute left-6 top-6 flex items-center gap-3 rounded-full border border-white/15 bg-black/30 px-4 py-2 backdrop-blur-md">
+            <div className="absolute left-4 top-4 flex items-center gap-3 rounded-full border border-white/15 bg-black/30 px-4 py-2 backdrop-blur-md sm:left-6 sm:top-6">
               <span className="h-1.5 w-1.5 rounded-full bg-orange" />
 
               <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-white/70">
@@ -317,33 +283,33 @@ export default function Home() {
               </span>
             </div>
 
-            <div className="pointer-events-none absolute bottom-0 left-0 right-0 p-7 sm:p-10 lg:p-14">
+            <div className="relative p-6 pt-24 sm:p-10 sm:pt-28 lg:p-14">
 
-              <div className="pointer-events-auto max-w-2xl">
+              <div className="max-w-2xl">
 
-                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-orange">
+                <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-orange sm:text-xs">
                   Autonomous aerial systems
                 </p>
 
-                <h3 className="text-3xl font-semibold tracking-[-0.03em] sm:text-4xl lg:text-5xl">
+                <h3 className="text-balance text-3xl font-semibold tracking-[-0.03em] sm:text-4xl lg:text-5xl">
                   Designed around intelligence.
                 </h3>
 
-                <p className="mt-5 max-w-xl text-sm leading-6 text-white/60 sm:text-base">
+                <p className="mt-4 max-w-xl text-sm leading-6 text-white/70 sm:mt-5 sm:text-base">
                   Aerial platforms engineered to combine perception,
                   navigation, control, and mission intelligence into a
                   connected autonomous system.
                 </p>
 
                 <Link
-                  href="/products"
-                  className="group mt-8 inline-flex items-center gap-3 text-sm font-semibold text-white"
+                  href={technologyHref}
+                  className={`group mt-6 inline-flex min-h-11 items-center gap-3 text-sm font-semibold text-white sm:mt-8 ${focusRing}`}
                 >
                   Discover the platform
 
                   <ArrowRight
                     size={17}
-                    className="transition-transform duration-300 group-hover:translate-x-1"
+                    className="transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none"
                   />
                 </Link>
 
@@ -354,70 +320,44 @@ export default function Home() {
       </section>
 
       {/* ========================= CAPABILITIES ========================= */}
-      <section className="bg-white py-24 text-body lg:py-32">
-        <div className="mx-auto max-w-container px-6 lg:px-12">
+      <section className="bg-white py-16 text-body sm:py-24 lg:py-32">
+        <div className="mx-auto max-w-container px-5 sm:px-6 lg:px-12">
 
-          <div className="grid gap-14 lg:grid-cols-[0.65fr_1.35fr] lg:items-start">
+          {/* Side-by-side only from lg: at tablet widths the heading was
+              squeezed into a very narrow column next to the paragraph. */}
+          <Reveal className="mb-10 flex flex-col gap-5 sm:mb-12 lg:mb-16 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
 
-            <Reveal>
+            <div className="min-w-0">
               <SectionLabel>Core capabilities</SectionLabel>
 
-              <h2 className="max-w-md text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl">
+              <h2 className="max-w-2xl text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl lg:text-6xl">
                 The technology behind autonomous systems.
               </h2>
-
-              <p className="mt-6 max-w-sm text-sm leading-6 text-muted">
-                Our approach combines sensing, intelligence, navigation, and
-                control into integrated technology designed for real-world
-                operation.
-              </p>
-            </Reveal>
-
-            <div className="divide-y divide-body/10 border-y border-body/10">
-
-              {capabilities.map((capability, index) => {
-                const Icon = capability.icon;
-
-                return (
-                  <Reveal key={capability.number} delay={index * 80}>
-                    <div
-                      className="group grid gap-6 py-8 transition-all duration-300 hover:px-3 md:grid-cols-[70px_60px_1fr] md:items-start"
-                    >
-                      <span className="font-mono text-xs text-muted/50">
-                        {capability.number}
-                      </span>
-
-                      <div className="flex h-11 w-11 items-center justify-center rounded-full border border-body/10 transition-all duration-300 group-hover:border-orange group-hover:bg-orange group-hover:text-white">
-                        <Icon size={19} strokeWidth={1.5} />
-                      </div>
-
-                      <div>
-                        <h3 className="text-xl font-semibold tracking-tight">
-                          {capability.title}
-                        </h3>
-
-                        <p className="mt-2 max-w-xl text-sm leading-6 text-muted">
-                          {capability.description}
-                        </p>
-                      </div>
-                    </div>
-                  </Reveal>
-                );
-              })}
-
             </div>
-          </div>
+
+            <p className="max-w-md text-sm leading-6 text-muted lg:max-w-sm lg:pb-2 lg:text-right">
+              Our approach combines sensing, intelligence, navigation, and
+              control into integrated technology designed for real-world
+              operation.
+            </p>
+
+          </Reveal>
+
+          <Reveal delay={90}>
+            <CapabilityExplorer />
+          </Reveal>
+
         </div>
       </section>
 
       {/* ========================= APPLICATIONS ========================= */}
-      <section className="border-t border-body/5 bg-white py-24 text-body lg:py-32">
-        <div className="mx-auto max-w-container px-6 lg:px-12">
+      <section className="border-t border-body/5 bg-white py-16 text-body sm:py-24 lg:py-32">
+        <div className="mx-auto max-w-container px-5 sm:px-6 lg:px-12">
 
-          <Reveal className="mb-14 max-w-3xl">
+          <Reveal className="mb-10 max-w-3xl sm:mb-14">
             <SectionLabel>Where it matters</SectionLabel>
 
-            <h2 className="text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl lg:text-6xl">
+            <h2 className="text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl lg:text-6xl">
               Technology designed for environments where decisions matter.
             </h2>
           </Reveal>
@@ -425,65 +365,98 @@ export default function Home() {
           <div className="grid gap-5 md:grid-cols-2">
 
             {/* Defense */}
-            <Reveal delay={0} className="group relative min-h-110 overflow-hidden rounded-2xl bg-navy text-white">
+            <Reveal delay={0} className="group relative flex min-h-104 flex-col justify-end overflow-hidden rounded-2xl bg-navy text-white sm:min-h-110">
 
               <Image
                 src="/images/drone-autonomous-aerial.png"
                 alt="Autonomous systems for demanding missions"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover opacity-70 transition-transform duration-700 group-hover:scale-105"
+                className="object-cover opacity-70 transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
               />
 
-              <div className="absolute inset-0 bg-linear-to-t from-black via-black/30 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent" />
 
-              <div className="absolute bottom-8 left-8 right-8">
+              {/* relative: content sits above the image and gradient */}
+              <div className="relative p-6 pt-32 sm:p-8">
 
                 <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-full border border-white/20">
                   <Shield size={19} strokeWidth={1.5} />
                 </div>
 
-                <h3 className="text-3xl font-semibold tracking-tight">
+                <h3 className="text-2xl font-semibold tracking-tight sm:text-3xl">
                   Defense &amp; Security
                 </h3>
 
-                <p className="mt-3 max-w-md text-sm leading-6 text-white/55">
+                <p className="mt-3 max-w-md text-sm leading-6 text-white/70">
                   Autonomous technology for surveillance, situational
                   awareness, and mission-focused operations.
                 </p>
 
+                <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-white">
+                  Learn more
+
+                  <ArrowRight
+                    size={17}
+                    className="transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none"
+                  />
+                </span>
+
               </div>
+
+              {/* Whole card is clickable */}
+              <Link
+                href={routes.defense}
+                aria-label="Explore Defense & Security"
+                className="absolute inset-0 z-10 rounded-2xl focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-orange"
+              />
             </Reveal>
 
             {/* Industrial */}
-            <Reveal delay={90} className="group relative min-h-110 overflow-hidden rounded-2xl bg-navy text-white">
+            <Reveal delay={90} className="group relative flex min-h-104 flex-col justify-end overflow-hidden rounded-2xl bg-navy text-white sm:min-h-110">
 
               <Image
                 src="/images/drone-mission-control.png"
                 alt="Autonomous systems for industrial applications"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover opacity-70 transition-transform duration-700 group-hover:scale-105"
+                className="object-cover opacity-70 transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
               />
 
-              <div className="absolute inset-0 bg-linear-to-t from-black via-black/30 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent" />
 
-              <div className="absolute bottom-8 left-8 right-8">
+              <div className="relative p-6 pt-32 sm:p-8">
 
                 <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-full border border-white/20">
                   <Target size={19} strokeWidth={1.5} />
                 </div>
 
-                <h3 className="text-3xl font-semibold tracking-tight">
+                <h3 className="text-2xl font-semibold tracking-tight sm:text-3xl">
                   Industrial Operations
                 </h3>
 
-                <p className="mt-3 max-w-md text-sm leading-6 text-white/55">
+                <p className="mt-3 max-w-md text-sm leading-6 text-white/70">
                   Intelligent aerial systems for inspection, monitoring,
                   mapping, and complex operational environments.
                 </p>
 
+                <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-white">
+                  Learn more
+
+                  <ArrowRight
+                    size={17}
+                    className="transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none"
+                  />
+                </span>
+
               </div>
+
+              {/* Whole card is clickable */}
+              <Link
+                href={routes.subConventional}
+                aria-label="Explore Industrial Operations"
+                className="absolute inset-0 z-10 rounded-2xl focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-orange"
+              />
             </Reveal>
 
           </div>
@@ -491,85 +464,90 @@ export default function Home() {
       </section>
 
       {/* ========================= ENGINEERING IN ACTION ========================= */}
-      <section className="border-y border-body/5 bg-surface-soft py-24 text-body lg:py-32">
-        <div className="mx-auto max-w-container px-6 lg:px-12">
+      <section className="border-y border-body/5 bg-surface-soft py-16 text-body sm:py-24 lg:py-32">
+        <div className="mx-auto max-w-container px-5 sm:px-6 lg:px-12">
 
-          <Reveal className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <Reveal className="mb-10 flex flex-col gap-5 sm:mb-12 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
 
-            <div>
+            <div className="min-w-0">
               <SectionLabel>Engineering in action</SectionLabel>
 
-              <h2 className="text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl lg:text-6xl">
+              <h2 className="text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl lg:text-6xl">
                 From the bench
                 <br />
                 <span className="text-body/40">to the field.</span>
               </h2>
             </div>
 
-            <p className="max-w-sm text-sm leading-6 text-muted">
-              Real hardware, built and flown by our own team — not renders.
+            <p className="max-w-xs text-sm leading-6 text-muted lg:pb-2 lg:text-right">
+              Real hardware, built and flown by our own team. Not renders.
             </p>
 
           </Reveal>
 
-          <div className="grid gap-5 md:grid-cols-2">
+          {/* One full-width card: a single slideshow of engineering and media
+              photos. The caption block is in normal flow (flex column), so
+              the card grows if the text needs more room on small screens
+              instead of clipping it. */}
+          <Reveal
+            delay={90}
+            className="group relative flex min-h-128 flex-col overflow-hidden rounded-2xl bg-navy-900 text-white sm:min-h-140 lg:min-h-150"
+          >
+            <ImageSlideshow
+              images={showcase.images}
+              intervalMs={showcase.intervalMs}
+              className="absolute inset-0 h-full w-full"
+              imageClassName="transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+            />
 
-            {proofPoints.map((point, index) => (
-              <Reveal
-                key={point.title}
-                delay={index * 90}
-                className="group relative min-h-110 overflow-hidden rounded-2xl bg-navy-900 text-white"
-              >
-                <ImageSlideshow
-                  images={point.images}
-                  intervalMs={point.intervalMs}
-                  className="absolute inset-0 h-full w-full"
-                  imageClassName="transition-transform duration-700 group-hover:scale-105"
-                />
+            <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/95 via-black/50 to-black/10 sm:from-black/90 sm:via-black/35" />
 
-                <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent" />
+            <div className="pointer-events-none relative flex flex-1 flex-col justify-between gap-16 p-5 sm:p-8 lg:p-12">
 
-                <span className="pointer-events-none absolute left-6 top-6 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/60">
-                  {point.category}
+              <div className="inline-flex w-fit items-center gap-2.5 rounded-full border border-white/15 bg-black/30 px-4 py-2 backdrop-blur-md">
+                <span className="h-1.5 w-1.5 rounded-full bg-orange" />
+                <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-white/70">
+                  {showcase.tag}
                 </span>
+              </div>
 
-                <div className="pointer-events-none absolute bottom-8 left-8 right-8">
-                  <h3 className="text-3xl font-semibold tracking-tight">
-                    {point.title}
-                  </h3>
+              <div className="grid gap-4 border-t border-white/15 pt-5 lg:grid-cols-[1.25fr_1fr] lg:items-end lg:gap-16 lg:pt-8">
+                <h3 className="max-w-xl text-balance text-2xl font-semibold leading-[1.15] tracking-[-0.02em] sm:text-3xl lg:text-4xl">
+                  {showcase.title}
+                </h3>
 
-                  <p className="mt-3 max-w-md text-sm leading-6 text-white/55">
-                    {point.description}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
+                <p className="max-w-md text-sm leading-6 text-white/75 sm:text-base sm:leading-7">
+                  {showcase.description}
+                </p>
+              </div>
 
-          </div>
+            </div>
+          </Reveal>
+
         </div>
       </section>
 
       {/* ========================= TECHNOLOGY STATEMENT ========================= */}
-      <section className="relative overflow-hidden bg-navy-950 py-32 lg:py-44">
+      <section className="relative overflow-hidden bg-navy-950 py-24 sm:py-32 lg:py-44">
 
-        <div className="absolute left-1/2 top-1/2 h-125 w-125 -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange/10 blur-[140px]" />
+        <div className="absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange/10 blur-[110px] sm:h-125 sm:w-125 sm:blur-[140px]" />
 
-        <Reveal className="relative mx-auto max-w-300 px-6 text-center">
+        <Reveal className="relative mx-auto max-w-300 px-5 text-center sm:px-6">
 
           <Sparkles
-            className="mx-auto mb-8 text-orange"
+            className="mx-auto mb-6 text-orange sm:mb-8"
             size={25}
             strokeWidth={1.3}
           />
 
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-white/35">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-white/50 sm:text-xs">
             The SafeSky Nexus approach
           </p>
 
-          <h2 className="mx-auto mt-7 max-w-5xl text-4xl font-medium leading-[1.05] tracking-[-0.04em] sm:text-5xl lg:text-7xl">
+          <h2 className="mx-auto mt-6 max-w-5xl text-balance text-[2rem] font-medium leading-[1.08] tracking-[-0.04em] min-[400px]:text-4xl sm:mt-7 sm:text-5xl lg:text-7xl lg:leading-[1.05]">
             Hardware is only the beginning.
 
-            <span className="block text-white/35">
+            <span className="block text-white/45">
               Intelligence is what moves it forward.
             </span>
           </h2>
@@ -578,26 +556,26 @@ export default function Home() {
       </section>
 
       {/* ========================= ABOUT ========================= */}
-      <section className="bg-white py-24 text-body lg:py-32">
-        <div className="mx-auto max-w-container px-6 lg:px-12">
+      <section className="bg-white py-16 text-body sm:py-24 lg:py-32">
+        <div className="mx-auto max-w-container px-5 sm:px-6 lg:px-12">
 
-          <Reveal className="mb-12 lg:mb-16">
+          <Reveal className="mb-10 lg:mb-16">
             <SectionLabel>About SafeSky Nexus</SectionLabel>
 
-            <p className="text-xs uppercase tracking-[0.18em] text-muted/70">
+            <p className="text-xs uppercase tracking-[0.18em] text-muted/80">
               Aerospace technology
             </p>
           </Reveal>
 
-          <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16">
+          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16">
 
             <Reveal>
 
-              <h2 className="max-w-4xl text-3xl font-semibold leading-[1.1] tracking-[-0.035em] sm:text-4xl lg:text-5xl">
+              <h2 className="max-w-4xl text-balance text-3xl font-semibold leading-[1.1] tracking-[-0.035em] sm:text-4xl lg:text-5xl">
                 Building the next generation of autonomous systems.
               </h2>
 
-              <p className="mt-7 max-w-2xl text-base leading-7 text-muted">
+              <p className="mt-6 max-w-2xl text-base leading-7 text-muted sm:mt-7">
                 SafeSky Nexus focuses on the engineering of autonomous aerial
                 and intelligent systems, bringing together software,
                 electronics, navigation, perception, and mission technologies.
@@ -605,32 +583,29 @@ export default function Home() {
 
               <Link
                 href="/about"
-                className="group mt-8 inline-flex items-center gap-3 text-sm font-semibold"
+                className={`group mt-6 inline-flex min-h-11 items-center gap-3 text-sm font-semibold sm:mt-8 ${focusRing}`}
               >
                 Discover SafeSky Nexus
 
                 <ArrowRight
                   size={17}
-                  className="transition-transform duration-300 group-hover:translate-x-1"
+                  className="transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none"
                 />
               </Link>
 
             </Reveal>
 
-            {/* Same card treatment used throughout the page (rounded
-                corners, border, bottom fade, pill tag with the brand dot),
-                sitting as an equal-weight partner to the text rather than
-                squeezed into a narrow label rail. Landscape crop biased
-                toward the lower-middle of the frame, since the source
-                photo is square and the actual subject — hands, soldering
-                iron, motors, wiring — sits below the two heads. */}
-            <Reveal delay={90} className="group relative aspect-16/10 overflow-hidden rounded-2xl border border-body/10 bg-navy">
+            {/* Landscape crop biased toward the lower-middle of the frame,
+                since the source photo is square and the subject (hands,
+                soldering iron, motors, wiring) sits below the two heads.
+                Slightly taller ratio on phones so the subject isn't cut. */}
+            <Reveal delay={90} className="group relative aspect-4/3 overflow-hidden rounded-2xl border border-body/10 bg-navy sm:aspect-16/10">
               <Image
                 src="/images/about-team-build.jpg"
                 alt="SafeSky Nexus engineers soldering motor connections during assembly"
                 fill
                 sizes="(max-width: 1024px) 100vw, 45vw"
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                 style={{ objectPosition: "center 62%" }}
               />
 
@@ -649,20 +624,20 @@ export default function Home() {
       </section>
 
       {/* ========================= FINAL CTA ========================= */}
-      <section className="relative overflow-hidden bg-navy py-28 lg:py-40">
+      <section className="relative overflow-hidden bg-navy py-24 sm:py-28 lg:py-40">
 
         <div
           className="absolute inset-0 opacity-[0.06]"
           style={{
             backgroundImage:
               "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-            backgroundSize: "70px 70px",
+            backgroundSize: "56px 56px",
           }}
         />
 
-        <Reveal className="relative mx-auto max-w-275 px-6 text-center">
+        <Reveal className="relative mx-auto max-w-275 px-5 text-center sm:px-6">
 
-          <div className="mx-auto mb-7 flex h-12 w-12 items-center justify-center rounded-full border border-white/10">
+          <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center rounded-full border border-white/10 sm:mb-7">
             <Zap
               size={19}
               className="text-orange"
@@ -670,26 +645,26 @@ export default function Home() {
             />
           </div>
 
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-white/35">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-white/50 sm:text-xs">
             Start a conversation
           </p>
 
-          <h2 className="mx-auto mt-6 max-w-4xl text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl lg:text-7xl">
+          <h2 className="mx-auto mt-5 max-w-4xl text-balance text-[2.2rem] font-semibold leading-[1.05] tracking-[-0.04em] min-[400px]:text-4xl sm:mt-6 sm:text-5xl lg:text-7xl">
             Have a mission in mind?
           </h2>
 
-          <p className="mx-auto mt-6 max-w-xl text-base leading-7 text-white/45">
+          <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-white/60 sm:mt-6">
             Tell us what you are trying to build, operate, or solve. Let&apos;s
             explore what autonomous technology can do for you.
           </p>
 
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
+          <div className="mx-auto mt-8 flex max-w-sm flex-col gap-3 sm:mt-10 sm:max-w-none sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4">
 
             <PrimaryButton href="/contact">
               Contact SafeSky Nexus
             </PrimaryButton>
 
-            <SecondaryButton href="/products">
+            <SecondaryButton href={technologyHref}>
               Explore our systems
             </SecondaryButton>
 

@@ -19,6 +19,9 @@ import { aboutAnchors, contact, primaryNav, routes, site, socials } from "@/lib/
      available icon set differs by installed version, and Instagram/Linkedin
      aren't guaranteed to exist across versions. Two small hand-drawn icons
      avoid that dependency entirely.
+   • Follow icons (Instagram, LinkedIn, Gmail) are now all real links that
+     open in a new tab. Gmail opens the Gmail compose page. Real Instagram
+     and LinkedIn URLs must be set in lib/site.ts (`socials`).
    ========================================================================== */
 
 /* Capability lists. These describe the product line but have no routes yet,
@@ -74,6 +77,7 @@ function LinkedInIcon(props: React.SVGProps<SVGSVGElement>) {
 const socialIcons = {
   Instagram: InstagramIcon,
   LinkedIn: LinkedInIcon,
+  Gmail: Mail,
 } as const;
 
 function ListItem({ label, href }: { label: string; href?: string }) {
@@ -111,6 +115,12 @@ function ColumnHeading({
 export default function Footer() {
   const year = new Date().getFullYear();
 
+  // Opens a Gmail compose window in a new tab (a plain mailto: link
+  // usually can't open in a new tab reliably).
+  const gmailHref = `https://mail.google.com/mail/?view=cm&fs=1&to=${contact.email}`;
+
+  const followLinks = [...socials, { label: "Gmail", href: gmailHref }];
+
   return (
     <footer className="relative bg-navy-950 text-white">
       {/* Hairline of brand colour so the footer reads as part of the system */}
@@ -138,7 +148,9 @@ export default function Footer() {
           <ul className="mt-6 space-y-3 text-sm">
             <li>
               <a
-                href={`mailto:${contact.email}`}
+                href={gmailHref}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex min-h-9 w-fit items-center gap-2.5 text-white/75 transition-colors duration-200 hover:text-orange"
               >
                 <Mail size={16} aria-hidden="true" className="shrink-0" />
@@ -202,25 +214,8 @@ export default function Footer() {
 
           <ColumnHeading className="mt-8">Follow</ColumnHeading>
           <ul className="flex gap-3">
-            {socials.map((social) => {
+            {followLinks.map((social) => {
               const Icon = socialIcons[social.label as keyof typeof socialIcons];
-              const isPlaceholder = social.href === "#";
-
-              // Don't ship a link that goes nowhere — show the icon, unlinked,
-              // until a real profile URL is added to lib/site.ts.
-              if (isPlaceholder) {
-                return (
-                  <li key={social.label}>
-                    <span
-                      title={`${social.label} — coming soon`}
-                      className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 text-white/35"
-                    >
-                      <Icon className="h-4.5 w-4.5" aria-hidden="true" />
-                      <span className="sr-only">{social.label}</span>
-                    </span>
-                  </li>
-                );
-              }
 
               return (
                 <li key={social.label}>
@@ -228,7 +223,11 @@ export default function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`${site.name} on ${social.label}`}
+                    aria-label={
+                      social.label === "Gmail"
+                        ? `Email ${site.name}`
+                        : `${site.name} on ${social.label}`
+                    }
                     className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-white/70 transition-[color,border-color,background-color,transform] duration-200 hover:-translate-y-0.5 hover:border-orange hover:bg-orange hover:text-white"
                   >
                     <Icon className="h-4.5 w-4.5" aria-hidden="true" />

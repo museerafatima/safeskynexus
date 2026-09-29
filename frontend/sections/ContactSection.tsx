@@ -16,26 +16,34 @@ import { contact } from "@/lib/site";
      are announced literally by screen readers.
    • Contact details come from lib/site.ts, and the email and phone are now
      actionable links rather than plain text.
+   • The email link opens a Gmail compose window in a new tab (same as the
+     footer's Gmail icon). A plain mailto: link does nothing for visitors who
+     have no desktop mail app set up.
    ========================================================================== */
+
+const gmailHref = `https://mail.google.com/mail/?view=cm&fs=1&to=${contact.email}`;
 
 const details = [
   {
     icon: Mail,
     label: "Email",
     value: contact.email,
-    href: `mailto:${contact.email}`,
+    href: gmailHref,
+    external: true,
   },
   {
     icon: Phone,
     label: "Phone",
     value: contact.phone,
     href: `tel:${contact.phoneHref}`,
+    external: false,
   },
   {
     icon: MapPin,
     label: "Office",
     value: contact.address,
     href: null,
+    external: false,
   },
 ];
 
@@ -59,7 +67,7 @@ export default function ContactSection() {
             <h1 className="type-h1">Talk to the people building it.</h1>
             <p className="type-lede mt-6 text-white/75">
               Whether you&apos;re evaluating autonomous systems, planning a
-              deployment, or exploring a partnership — send us the details and
+              deployment, or exploring a partnership. Send us the details and
               the right engineer will answer.
             </p>
           </Reveal>
@@ -99,6 +107,9 @@ export default function ContactSection() {
                         {item.href ? (
                           <a
                             href={item.href}
+                            {...(item.external
+                              ? { target: "_blank", rel: "noopener noreferrer" }
+                              : {})}
                             className="group -mx-2 flex min-h-14 items-center gap-4 rounded-xl px-2 py-3 transition-colors duration-200 hover:bg-surface-soft"
                           >
                             {inner}
