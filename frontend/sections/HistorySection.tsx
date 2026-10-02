@@ -28,7 +28,7 @@ export default function HistorySection() {
               Founded to strengthen Pakistan&apos;s technological
               independence, SSN set out to solve a persistent problem in
               modern warfare: reliable autonomous navigation in
-              anti-spoofing environments &mdash; building AI-powered
+              anti-spoofing environments, building AI-powered
               computer vision systems capable of autonomous flight without
               satellite navigation or external communication signals.
             </p>

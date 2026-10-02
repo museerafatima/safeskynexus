@@ -25,17 +25,22 @@ const technologyHref = routes.defense;
 /* Real photographs — bench build and live media coverage, shown together
    in ONE card as a single auto-crossfading slideshow. `intervalMs` sets how
    long the card lingers on each image. Drop new files into /public/images/
-   and add their paths to the array — nothing else needs to change. */
+   and add their paths to the array — nothing else needs to change.
+   ImageSlideshow fills the card with object-cover, so every photo here is
+   cropped to the card's own ratio automatically — no per-image sizing to
+   set. Portrait photos are centered; the sides just get trimmed a bit more
+   than a landscape photo would. */
 const showcase = {
   intervalMs: 3500,
   tag: "Engineering & Media",
   images: [
-    { src: "/images/rd-lab-build-1.jpg", alt: "SafeSky Nexus team soldering motor connections on the bench" },
+    { src: "/images/rd-lab-build.jpg", alt: "SafeSky Nexus team soldering motor connections on the bench" },
     { src: "/images/rd-lab-build-2.jpg", alt: "SafeSky Nexus engineers assembling an airframe together" },
     { src: "/images/rd-lab-build-3.jpg", alt: "SafeSky Nexus autonomous platform on the bench with flight-planning software" },
+    { src: "/images/engineering-tracking-demo.jpg", alt: "Laptop running SafeSky Nexus's dual-stage autonomous tracking software next to an assembled drone" },
+    { src: "/images/engineering-drone-handheld.jpg", alt: "SafeSky Nexus team member holding an assembled quadcopter with onboard compute and camera" },
+    { src: "/images/engineering-field-test.jpg", alt: "SafeSky Nexus engineers inspecting a drone during an outdoor field test" },
     { src: "/images/media-feature.jpg", alt: "SafeSky Nexus presenting to ARY News at NUTECH" },
-    { src: "/images/media-feature-2.jpg", alt: "SafeSky Nexus discussed on Suno News, covering the platform's commercial launch" },
-    { src: "/images/media-feature-4.jpg", alt: "SafeSky Nexus featured on GTV News discussing autonomous aerial technology" },
   ],
   title: "Built in-house. Tested in the field. Shared across Pakistan.",
   description:

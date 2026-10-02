@@ -35,7 +35,7 @@ export default function MissionSection() {
             <h2 className="type-h2 text-navy">Our mission</h2>
             <p className="type-body mt-5 text-muted">
               We build intelligent autonomous aerial systems for defense and
-              critical civilian sectors &mdash; reliable, secure, and fully
+              critical civilian sectors: reliable, secure, and fully
               indigenous, with no dependence on foreign navigation.
             </p>
 

@@ -68,7 +68,7 @@ export default function AboutHero() {
         <Reveal delay={200}>
           <p className="mx-auto mt-14 max-w-3xl border-l-2 border-orange pl-6 text-lg leading-relaxed text-white/85 sm:text-xl lg:mt-20">
             Intelligent, vision-based unmanned aerial systems that operate
-            without GPS — secure, reliable and mission-ready in the most
+            without GPS: secure, reliable and mission-ready in the most
             challenging operational environments.
           </p>
         </Reveal>

@@ -10,10 +10,9 @@
  *     "NASTP, Rawalpindi".
  * They are now defined once, here.
  *
- * >>> ACTION REQUIRED: confirm `phone` and `address` below are correct. <<<
- * I kept the number shown on the Contact page (+92 334 2388218) and the city
- * used by both Footer and Contact (Rawalpindi), since those agreed with each
- * other. Change them here and every page updates.
+ * >>> ACTION REQUIRED: confirm `address` below is still correct. <<<
+ * The phone number was updated to 0315 5670000 (+92 315 5670000). The city
+ * used by both Footer and Contact (Rawalpindi) is unchanged.
  */
 
 export const site = {
@@ -22,16 +21,16 @@ export const site = {
   shortName: "SSN",
   tagline: "Autonomous aerospace technology",
   description:
-    "SafeSky Nexus builds indigenous, GPS-free autonomous aerial systems — vision-based platforms that perceive, navigate and operate in contested environments.",
+    "SafeSky Nexus builds indigenous, GPS-free autonomous aerial systems: vision-based platforms that perceive, navigate and operate in contested environments.",
   url: "https://www.safeskynexus.com",
 } as const;
 
 export const contact = {
   email: "info@safeskynexus.com",
   /** Human-readable. Must describe the same number as `phoneHref`. */
-  phone: "+92 314 9678999",
+  phone: "+92 315 5670000",
   /** E.164, no spaces — used for the tel: link. */
-  phoneHref: "+923149678999",
+  phoneHref: "+923155670000",
   address: "Alpha Square, NICAT, NASTP, Rawalpindi, Pakistan",
   /** Short form used in the stats band. */
   campus: "NASTP, Rawalpindi",

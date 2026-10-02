@@ -30,7 +30,7 @@ export default function VisionSection() {
             <h2 className="type-h2 text-navy">Our vision</h2>
             <p className="type-body mt-5 text-muted">
               To become Pakistan&apos;s leading aerospace defense technology
-              company &mdash; pioneering autonomous systems, built through
+              company: pioneering autonomous systems, built through
               indigenous innovation, that strengthen national security,
               support critical industries, and position Pakistan among
               global leaders in autonomous defense.

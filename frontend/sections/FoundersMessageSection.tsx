@@ -58,8 +58,8 @@ export default function FoundersMessageSection() {
                 autonomous systems from the ground up.
               </p>
               <p className="type-body text-white/80">
-                His goal is a complete indigenous aerial autonomy ecosystem
-                &mdash; closing the gap in GPS-denied navigation and
+                His goal is a complete indigenous aerial autonomy ecosystem,
+                closing the gap in GPS-denied navigation and
                 intelligent targeting for Pakistan&rsquo;s defense sector,
                 with full-stack, ITAR-free solutions that reduce dependence
                 on foreign systems.
