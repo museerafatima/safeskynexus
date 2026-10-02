@@ -18,9 +18,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(contact_router.router)
-app.include_router(drones_router.router)
+# Everything lives under /api. On Vercel, requests to /api/... are routed to
+# this service WITHOUT the prefix being stripped (see vercel.json), so the
+# routes must really be mounted at /api/... Using the same prefix locally
+# keeps development and production identical.
+app.include_router(contact_router.router, prefix="/api")
+app.include_router(drones_router.router, prefix="/api")
 
-@app.get("/")
+
+@app.get("/api")
+@app.get("/api/")
 def root():
     return {"status": "SafeSky Nexus API is running"}
