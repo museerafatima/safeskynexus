@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
+
 @router.post("/contact", response_model=ContactResponse, status_code=201)
 def create_contact(payload: ContactCreate, db: Session = Depends(get_db)):
     try:
@@ -25,19 +26,25 @@ def create_contact(payload: ContactCreate, db: Session = Depends(get_db)):
         db.refresh(submission)
     except Exception:
         db.rollback()
+        logger.exception("Failed to save contact submission")
         raise HTTPException(status_code=500, detail="Something went wrong. Please try again.")
 
-    # The submission is already safely saved at this point. If the email
-    # notification fails (bad credentials, Gmail hiccup, network issue),
-    # we log it but still return success to the person filling out the
-    # form — their message was received either way, and it's already in
-    # the database even if nobody got pinged about it.
+    # The submission is already safely saved. If the notification email fails
+    # (bad app password, Gmail hiccup, network), log it but still tell the
+    # visitor their message was received — it IS in the database.
+    #
+    # Kept synchronous on purpose: this app deploys to Vercel serverless
+    # (see vercel.json), where work scheduled with BackgroundTasks after the
+    # response is sent can be frozen before it finishes. The SMTP timeout in
+    # settings keeps the worst case bounded.
     try:
         send_contact_notification(
             name=payload.name,
             email=payload.email,
             message=payload.message,
             phone=payload.phone,
+            submission_id=submission.id,
+            submitted_at=submission.created_at,
         )
     except Exception:
         logger.exception(
